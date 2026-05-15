@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #1E3A5F;
+  --navy-light: #2A4F7C;
+  --navy-dark: #152B47;
+  --gold: #F5A623;
+  --gold-light: #F7BA52;
+  --gold-dark: #D4891A;
+  --crimson: #C0392B;
+  --stone-50: #FAFAF9;
+  --stone-100: #F5F5F0;
+  --stone-200: #E8E8E0;
+  --stone-300: #D1D1C4;
+  --border: #E2E1D8;
+  --card: #FFFFFF;
+  --shadow-sm: 0 1px 3px rgba(30,58,95,0.06);
+  --shadow-md: 0 4px 12px rgba(30,58,95,0.08);
+  --shadow-lg: 0 8px 32px rgba(30,58,95,0.12);
+}
+
+* { box-sizing: border-box; }
+
+html {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { background: #FAFAF9; color: #1A1A18; }
+
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #F5F5F0; }
+::-webkit-scrollbar-thumb { background: #D1D1C4; border-radius: 3px; }
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 0.3s ease-out forwards; }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in { animation: fade-in 0.4s ease-out forwards; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #E8E8E0 25%, #F5F5F0 50%, #E8E8E0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #1E3A5F, #F5A623);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.card-lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+.glass { background: rgba(255,255,255,0.88); backdrop-filter: blur(12px); }
+
+*:focus-visible { outline: 2px solid #F5A623; outline-offset: 2px; border-radius: 4px; }
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: pulse-ring 1.5s ease-out infinite;
+}

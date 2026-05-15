@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Background shield shape -->
+  <path d="M60 8 L100 22 L100 65 C100 86 82 102 60 112 C38 102 20 86 20 65 L20 22 Z" fill="#1E2D4E"/>
+  <!-- Inner shield outline -->
+  <path d="M60 18 L92 30 L92 65 C92 81 77 95 60 104 C43 95 28 81 28 65 L28 30 Z" fill="none" stroke="#D4A843" stroke-width="1.5" opacity="0.6"/>
+  <!-- AA monogram -->
+  <text x="60" y="72" text-anchor="middle" font-family="Georgia, serif" font-size="36" font-weight="700" fill="#FFFFFF" letter-spacing="-2">AA</text>
+  <!-- Gold accent line -->
+  <line x1="40" y1="80" x2="80" y2="80" stroke="#D4A843" stroke-width="1.5" opacity="0.8"/>
+  <!-- Stars decoration -->
+  <circle cx="47" cy="88" r="2" fill="#D4A843" opacity="0.7"/>
+  <circle cx="60" cy="90" r="2.5" fill="#D4A843"/>
+  <circle cx="73" cy="88" r="2" fill="#D4A843" opacity="0.7"/>
+</svg>
