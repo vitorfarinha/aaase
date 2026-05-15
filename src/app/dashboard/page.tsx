@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Users, Briefcase, Award, Calendar, Sparkles, ArrowRight, ChevronRight, Shield, MapPin, Clock } from "lucide-react";
 import { currentUser, alumniList, opportunities, events, notifications } from "@/data/demo";
+import { MemberCard } from "@/components/MemberCard";
 
 export default function DashboardPage() {
   const stats = [
@@ -150,32 +151,9 @@ export default function DashboardPage() {
 
         {/* Right column — sidebar */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {/* Member Card */}
-          <div className="hero-gradient" style={{ borderRadius: 20, padding: "22px 24px", color: "white" }}>
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 18 }}>
-                <div>
-                  <div className="label" style={{ color: "rgba(255,255,255,0.45)", marginBottom: 4 }}>Cartão de Membro</div>
-                  <div style={{ fontSize: 13.5, fontWeight: 700, letterSpacing: "-0.01em" }}>AAASE</div>
-                </div>
-                <div style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Shield style={{ width: 14, height: 14, color: "rgba(255,255,255,0.75)" }} />
-                </div>
-              </div>
-              <div style={{ marginBottom: 18 }}>
-                <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.02em" }}>{currentUser.name}</div>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", marginTop: 2 }}>Turma {currentUser.graduationYear} · {currentUser.memberNumber}</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
-                <div>
-                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", marginBottom: 2 }}>Trust Score</div>
-                  <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.03em" }}>{currentUser.trustScore}</div>
-                </div>
-                <Link href="/rewards" style={{ fontSize: 12, fontWeight: 500, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.20)", borderRadius: 11, padding: "7px 12px", color: "white", textDecoration: "none" }}>
-                  Ver benefícios →
-                </Link>
-              </div>
-            </div>
+          {/* Member Card — compact version */}
+          <div>
+            <MemberCard compact={true} />
           </div>
 
           {/* Profile completeness */}

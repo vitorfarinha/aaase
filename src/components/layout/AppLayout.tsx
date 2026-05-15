@@ -154,8 +154,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* ── TopBar ── */}
-      <header className="glass-topbar fixed right-0 z-20 flex items-center justify-between"
-        style={{ left: "var(--sidebar-w)", height: "var(--topbar-h)", top: 0, padding: "0 16px" }}>
+      <header className="glass-topbar"
+        style={{ position: "fixed", top: 0, left: "var(--sidebar-w)", right: 0, zIndex: 20,
+                 height: "var(--topbar-h)", display: "flex", alignItems: "center",
+                 justifyContent: "space-between", padding: "0 20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {/* Hamburger — mobile only */}
           <button

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Shield, Sparkles, X, Copy, Check, QrCode } from "lucide-react";
+import { Sparkles, X, Copy, Check, QrCode } from "lucide-react";
+import { MemberCard } from "@/components/MemberCard";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { rewards, currentUser } from "@/data/demo";
 import type { Reward } from "@/types";
@@ -53,19 +54,19 @@ function BenefitModal({ reward, onClose }: { reward: Reward; onClose: () => void
           <div style={{ position: "relative", zIndex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase", color: "rgba(255,255,255,0.50)", marginBottom: 6 }}>Benefício Alumni</div>
-                <div style={{ fontSize: 22, marginBottom: 4 }}>{reward.emoji}</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: "white", letterSpacing: "-0.02em", lineHeight: 1.2 }}>{reward.title}</div>
-                <div style={{ fontSize: 12.5, color: "rgba(255,255,255,0.60)", marginTop: 4 }}>{reward.partner}</div>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase", color: "rgba(100,50,0,0.60)", marginBottom: 6 }}>Benefício Alumni</div>
+                <div style={{ fontSize: 26, marginBottom: 6 }}>{reward.emoji}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: "#1A0A00", letterSpacing: "-0.02em", lineHeight: 1.2 }}>{reward.title}</div>
+                <div style={{ fontSize: 12.5, color: "rgba(100,50,0,0.65)", marginTop: 4, fontWeight: 500 }}>{reward.partner}</div>
               </div>
-              <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 10, background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-                <X style={{ width: 15, height: 15, color: "white" }} />
+              <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 10, background: "rgba(0,0,0,0.10)", border: "1px solid rgba(100,50,0,0.15)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+                <X style={{ width: 15, height: 15, color: "#5A3000" }} />
               </button>
             </div>
 
             {/* Benefit pill */}
-            <div style={{ marginTop: 16, display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.20)", borderRadius: 10, padding: "7px 14px" }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: "white" }}>{reward.benefit}</span>
+            <div style={{ marginTop: 16, display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(0,0,0,0.10)", border: "1px solid rgba(100,50,0,0.15)", borderRadius: 10, padding: "7px 14px" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#1A0A00" }}>{reward.benefit}</span>
             </div>
           </div>
         </div>
@@ -139,35 +140,9 @@ export default function RewardsPage() {
           <p style={{ fontSize: 14, color: "var(--n400)" }}>Vantagens exclusivas da comunidade alumni</p>
         </div>
 
-        {/* Digital member card */}
-        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 24, padding: "32px 36px", marginBottom: 28, color: "white", maxWidth: "min(520px, 100%)" }}>
-          <div style={{ position: "relative", zIndex: 1 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28 }}>
-              <div>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)", marginBottom: 6 }}>Cartão de Membro</div>
-                <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.01em" }}>AAASE Alumni Network</div>
-              </div>
-              <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.14)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Shield style={{ width: 17, height: 17, color: "rgba(255,255,255,0.75)" }} />
-              </div>
-            </div>
-
-            <div style={{ marginBottom: 28 }}>
-              <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-0.025em", marginBottom: 6 }}>{currentUser.name}</div>
-              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)" }}>Turma {currentUser.graduationYear} · {currentUser.memberNumber}</div>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
-              <div>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.40)", marginBottom: 4 }}>Trust Score</div>
-                <div style={{ fontSize: 26, fontWeight: 750, letterSpacing: "-0.04em" }}>{currentUser.trustScore}</div>
-              </div>
-              {/* Member card QR */}
-              <div style={{ width: 64, height: 64, background: "rgba(255,255,255,0.92)", borderRadius: 12, padding: 6 }}>
-                <QRGrid seed={currentUser.memberNumber} size={7} />
-              </div>
-            </div>
-          </div>
+        {/* Digital member card — inspired by physical "Cartão de Associado" */}
+        <div className="animate-fade-up delay-100" style={{ marginBottom: 28 }}>
+          <MemberCard />
         </div>
 
         {/* AI recommendation */}
