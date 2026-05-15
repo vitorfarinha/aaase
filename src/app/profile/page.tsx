@@ -16,9 +16,9 @@ export default function ProfilePage() {
     <AppLayout>
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
         {/* Profile header card */}
-        <div className="card-glass animate-fade-up" style={{ padding: "32px 36px", marginBottom: 20, position: "relative", overflow: "hidden" }}>
+        <div className="card-glass animate-fade-up" style={{ padding: "clamp(20px,4vw,32px) clamp(18px,4vw,36px)", marginBottom: 16, position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: 0, right: 0, width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(46,109,180,0.07) 0%, transparent 70%)", transform: "translate(30%, -30%)", pointerEvents: "none" }} />
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 24, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 20, flexWrap: "wrap" }}>
             <div style={{ position: "relative" }}>
               <div style={{ width: 80, height: 80, borderRadius: "50%", background: "var(--blue)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "white", boxShadow: "0 4px 20px rgba(46,109,180,0.30)" }}>
                 {currentUser.initials}
@@ -83,7 +83,7 @@ export default function ProfilePage() {
         {/* Tab content */}
         <div className="animate-fade-up delay-150">
           {activeTab === "Visão geral" && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14 }}>
               <div className="card-glass" style={{ padding: "20px 22px" }}>
                 <div style={{ fontSize: 14, fontWeight: 650, color: "var(--n800)", marginBottom: 14 }}>Completude do perfil</div>
                 <div style={{ fontSize: 28, fontWeight: 750, color: "var(--blue)", letterSpacing: "-0.03em", marginBottom: 8 }}>{currentUser.profileCompleteness}%</div>

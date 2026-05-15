@@ -101,7 +101,7 @@ export default function AlumniProfilePage() {
         )}
 
         {/* Details */}
-        <div className="animate-fade-up delay-150" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="animate-fade-up delay-150" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14 }}>
           <div className="card-glass" style={{ padding: "20px 22px" }}>
             <div style={{ fontSize: 13.5, fontWeight: 650, color: "var(--n800)", marginBottom: 14 }}>Interesses</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>

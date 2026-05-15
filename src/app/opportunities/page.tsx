@@ -41,7 +41,7 @@ export default function OpportunitiesPage() {
         </div>
 
         {/* Type filters */}
-        <div className="animate-fade-up delay-150" style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+        <div className="animate-fade-up delay-150" style={{ display: "flex", gap: 8, marginBottom: 20 }}>
           {types.map(t => (
             <button key={t} onClick={() => setActiveType(t)}
               style={{ padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s", background: activeType === t ? "var(--blue)" : "var(--n0)", color: activeType === t ? "white" : "var(--n600)", border: activeType === t ? "none" : "1px solid var(--n200)", boxShadow: activeType === t ? "0 2px 8px rgba(46,109,180,0.25)" : "var(--shadow-xs)" } as React.CSSProperties}
@@ -53,7 +53,7 @@ export default function OpportunitiesPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {filtered.map((opp, i) => (
             <div key={opp.id} className="card-glass animate-fade-up" style={{ padding: "22px 24px", animationDelay: `${i * 0.07}s` }}>
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, marginBottom: 14 }}>
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, marginBottom: 14, flexWrap: "wrap" }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 6 }}>
                     <span className={`pill ${typeColor[opp.type] || "pill-neutral"}`}>{typeLabel[opp.type] || opp.type}</span>

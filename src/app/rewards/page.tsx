@@ -140,7 +140,7 @@ export default function RewardsPage() {
         </div>
 
         {/* Digital member card */}
-        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 24, padding: "32px 36px", marginBottom: 28, color: "white", maxWidth: 520 }}>
+        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 24, padding: "32px 36px", marginBottom: 28, color: "white", maxWidth: "min(520px, 100%)" }}>
           <div style={{ position: "relative", zIndex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28 }}>
               <div>
@@ -179,7 +179,7 @@ export default function RewardsPage() {
         </div>
 
         {/* Rewards grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(290px, 100%), 1fr))", gap: 16 }}>
           {rewards.map((r, i) => (
             <div key={r.id} className="card-glass animate-fade-up" style={{ padding: "22px", animationDelay: `${i * 0.07}s`, position: "relative", overflow: "hidden" }}>
 

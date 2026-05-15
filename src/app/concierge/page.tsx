@@ -77,7 +77,7 @@ export default function ConciergePage() {
 
   return (
     <AppLayout>
-      <div style={{ maxWidth: 760, margin: "0 auto", height: "calc(100vh - 120px)", display: "flex", flexDirection: "column" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", height: "calc(100dvh - var(--topbar-h) - var(--mobile-nav-h, 0px) - 56px)", display: "flex", flexDirection: "column" }}>
         {/* Header */}
         <div className="card-glass animate-fade-up" style={{ padding: "16px 22px", marginBottom: 16, display: "flex", alignItems: "center", gap: 14 }}>
           <div style={{ width: 42, height: 42, borderRadius: 13, background: "linear-gradient(135deg, var(--blue-dark), var(--blue))", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 16px rgba(46,109,180,0.35)" }}>
@@ -145,7 +145,7 @@ export default function ConciergePage() {
             onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); } }}
             placeholder="Pergunta qualquer coisa sobre a rede alumni..."
             rows={1}
-            style={{ flex: 1, background: "var(--n50)", border: "1px solid var(--n200)", borderRadius: 14, padding: "10px 14px", fontSize: 14, color: "var(--n800)", resize: "none", outline: "none", fontFamily: "inherit", lineHeight: 1.5, transition: "border-color 0.15s" }}
+            style={{ flex: 1, background: "var(--n50)", border: "1px solid var(--n200)", borderRadius: 14, padding: "10px 14px", fontSize: 16, color: "var(--n800)", resize: "none", outline: "none", fontFamily: "inherit", lineHeight: 1.5, transition: "border-color 0.15s" }}
             onFocus={e => { e.target.style.borderColor = "var(--blue)"; }}
             onBlur={e => { e.target.style.borderColor = "var(--n200)"; }}
           />

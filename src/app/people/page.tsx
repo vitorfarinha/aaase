@@ -153,16 +153,10 @@ export default function PeoplePage() {
         </div>
 
         {/* Filters */}
-        <div className="animate-fade-up delay-200" style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+        <div className="filter-scroll animate-fade-up delay-200" style={{ marginBottom: 20 }}>
           {filters.map(f => (
             <button key={f} onClick={() => setActiveFilter(f)}
-              style={{
-                padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.15s",
-                background: activeFilter === f ? "var(--blue)" : "var(--n0)",
-                color: activeFilter === f ? "white" : "var(--n600)",
-                boxShadow: activeFilter === f ? "0 2px 8px rgba(46,109,180,0.25)" : "var(--shadow-xs)",
-                border: activeFilter === f ? "none" : "1px solid var(--n200)",
-              } as React.CSSProperties}
+              style={{ padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.15s", background: activeFilter === f ? "var(--blue)" : "var(--n0)", color: activeFilter === f ? "white" : "var(--n600)", boxShadow: activeFilter === f ? "0 2px 8px rgba(46,109,180,0.25)" : "var(--shadow-xs)", border: activeFilter === f ? "none" : "1px solid var(--n200)", whiteSpace: "nowrap", fontFamily: "inherit" } as React.CSSProperties}
             >
               {f}
             </button>
@@ -170,7 +164,7 @@ export default function PeoplePage() {
         </div>
 
         {/* Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(340px, 100%), 1fr))", gap: 16 }}>
           {filtered.map((person, i) => (
             <div key={person.id} style={{ animationDelay: `${i * 0.06}s` }}>
               <AlumniCard person={person} />

@@ -36,11 +36,9 @@ export default function LoginPage() {
     <div style={{ minHeight: "100dvh", background: "var(--n50)", display: "flex" }} className="app-bg">
       {/* Left panel — hero */}
       <div
-        className="hero-gradient"
-        style={{ width: "44%", display: "none", flexDirection: "column", justifyContent: "space-between", padding: "48px", position: "relative", flexShrink: 0 }}
-        id="left-panel"
+        className="hero-gradient login-left-panel"
+        style={{ width: "min(44%, 480px)", flexDirection: "column", justifyContent: "space-between", padding: "clamp(32px, 5vw, 48px)", position: "relative", flexShrink: 0 }}
       >
-        <style>{`@media(min-width:960px){#left-panel{display:flex}}`}</style>
         <div style={{ position: "relative", zIndex: 1 }}>
           {/* Logo */}
           <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 56 }}>
@@ -77,8 +75,7 @@ export default function LoginPage() {
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
         <div style={{ width: "100%", maxWidth: 380 }}>
           {/* Mobile logo */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }} id="mobile-logo">
-            <style>{`@media(min-width:960px){#mobile-logo{display:none}}`}</style>
+          <div className="login-mobile-logo" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
             <div style={{ width: 36, height: 36, borderRadius: 11, overflow: "hidden" }}>
               <img src="/aaase-logo.png" alt="AAASE" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
@@ -128,7 +125,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="o-teu-email@exemplo.com"
-                  className="input-field"
+                  className="input-field" 
                   style={{ marginBottom: 10 }}
                 />
                 <button type="submit" className="btn-primary" style={{ width: "100%", padding: "12px", fontSize: 14, borderRadius: 14 }} disabled={loading || !email}>

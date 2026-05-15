@@ -20,12 +20,12 @@ export default function EventsPage() {
         </div>
 
         {/* Featured */}
-        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 24, padding: "32px 36px", marginBottom: 24, color: "white" }}>
+        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 20, padding: "clamp(20px,4vw,32px) clamp(20px,4vw,36px)", marginBottom: 24, color: "white" }}>
           <div style={{ position: "relative", zIndex: 1 }}>
             <span className="pill" style={{ background: "rgba(255,255,255,0.18)", color: "white", fontSize: 11, marginBottom: 16, display: "inline-block" }}>🎟 Destaque</span>
             <h2 style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.025em", marginBottom: 10 }}>{events[0].title}</h2>
             <p style={{ fontSize: 14, color: "rgba(255,255,255,0.68)", lineHeight: 1.6, marginBottom: 20, maxWidth: 500 }}>{events[0].description}</p>
-            <div style={{ display: "flex", gap: 20, fontSize: 13, color: "rgba(255,255,255,0.65)", marginBottom: 24 }}>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", fontSize: 13, color: "rgba(255,255,255,0.65)", marginBottom: 20 }}>
               <span style={{ display: "flex", gap: 6, alignItems: "center" }}><Clock style={{ width: 13, height: 13 }} />{events[0].date} · {events[0].time}</span>
               <span style={{ display: "flex", gap: 6, alignItems: "center" }}><MapPin style={{ width: 13, height: 13 }} />{events[0].location}</span>
               <span style={{ display: "flex", gap: 6, alignItems: "center" }}><Users style={{ width: 13, height: 13 }} />{events[0].attendeeCount}/{events[0].capacity}</span>

@@ -33,7 +33,7 @@ export default function CommercePage() {
         </div>
 
         {/* Categories */}
-        <div className="animate-fade-up delay-150" style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+        <div className="animate-fade-up delay-150" style={{ display: "flex", gap: 8, marginBottom: 20 }}>
           {categories.map(c => (
             <button key={c} onClick={() => setActiveCat(c)}
               style={{ padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s", background: activeCat === c ? "var(--blue)" : "white", color: activeCat === c ? "white" : "var(--n600)", border: activeCat === c ? "none" : "1px solid var(--n200)", boxShadow: activeCat === c ? "0 2px 8px rgba(46,109,180,0.25)" : "var(--shadow-xs)" } as React.CSSProperties}>
@@ -43,7 +43,7 @@ export default function CommercePage() {
         </div>
 
         {/* Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))", gap: 16 }}>
           {filtered.map((biz, i) => (
             <div key={biz.id} className="card-glass animate-fade-up" style={{ padding: "24px", animationDelay: `${i * 0.07}s` }}>
               {/* Header */}
