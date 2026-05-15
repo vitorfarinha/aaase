@@ -1,144 +1,75 @@
 "use client";
-
 import { useState } from "react";
-import { Bell, Shield, Eye, Smartphone, Globe, LogOut, ChevronRight } from "lucide-react";
+import { Bell, Shield, Eye, Globe, LogOut } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { currentUser } from "@/data/demo";
-import { cn } from "@/lib/utils";
 
 function Toggle({ checked, onChange }: { checked: boolean; onChange: () => void }) {
   return (
-    <button
-      onClick={onChange}
-      className={cn(
-        "w-11 h-6 rounded-full transition-all relative",
-        checked ? "bg-[#1E2D4E]" : "bg-[#EDE8E3]"
-      )}
-    >
-      <div className={cn(
-        "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-all shadow-soft",
-        checked ? "left-5.5" : "left-0.5"
-      )} style={{ left: checked ? "22px" : "2px" }} />
+    <button onClick={onChange} style={{ width: 44, height: 24, borderRadius: 999, background: checked ? "var(--blue)" : "var(--n200)", border: "none", cursor: "pointer", position: "relative", transition: "background 0.2s", flexShrink: 0 }}>
+      <div style={{ width: 20, height: 20, borderRadius: "50%", background: "white", position: "absolute", top: 2, left: checked ? 22 : 2, transition: "left 0.2s", boxShadow: "var(--shadow-sm)" }} />
     </button>
   );
 }
 
+function Section({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) {
+  return (
+    <div className="card-glass animate-fade-up" style={{ padding: "22px", marginBottom: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+        <div className="stat-blue" style={{ width: 34, height: 34, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Icon style={{ width: 15, height: 15 }} />
+        </div>
+        <div style={{ fontSize: 15, fontWeight: 650, color: "var(--n800)", letterSpacing: "-0.015em" }}>{title}</div>
+      </div>
+      {children}
+    </div>
+  );
+}
+
 export default function SettingsPage() {
-  const [prefs, setPrefs] = useState({
-    emailIntros: true,
-    emailEvents: true,
-    emailOpportunities: false,
-    pushNotifs: true,
-    profileVisible: true,
-    showInSearch: true,
-    allowIntros: true,
-    mentorAvailable: currentUser.isMentor,
-    language: "pt",
-  });
-
-  const toggle = (key: keyof typeof prefs) => {
-    setPrefs(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const sections = [
-    {
-      title: "Notificações por email",
-      icon: Bell,
-      color: "bg-blue-50 text-blue-600",
-      items: [
-        { key: "emailIntros" as const, label: "Pedidos de introdução", desc: "Quando alguém pede uma introdução através de ti" },
-        { key: "emailEvents" as const, label: "Eventos AAASE", desc: "Novos eventos e lembretes de inscrição" },
-        { key: "emailOpportunities" as const, label: "Oportunidades", desc: "Novas oportunidades que correspondem ao teu perfil" },
-      ],
-    },
-    {
-      title: "Privacidade",
-      icon: Shield,
-      color: "bg-emerald-50 text-emerald-600",
-      items: [
-        { key: "profileVisible" as const, label: "Perfil visível", desc: "Outros alumni podem ver o teu perfil completo" },
-        { key: "showInSearch" as const, label: "Aparecer na pesquisa", desc: "O teu nome aparece nos resultados de pesquisa da rede" },
-        { key: "allowIntros" as const, label: "Aceitar introduções", desc: "Outros alumni podem pedir-te para fazer introduções" },
-      ],
-    },
-    {
-      title: "Mentoria",
-      icon: Globe,
-      color: "bg-amber-50 text-amber-600",
-      items: [
-        { key: "mentorAvailable" as const, label: "Disponível para mentorar", desc: "O teu perfil aparece na lista de mentores activos" },
-        { key: "pushNotifs" as const, label: "Notificações push", desc: "Recebe notificações no telemóvel" },
-      ],
-    },
-  ];
+  const [prefs, setPrefs] = useState({ emails: true, intro: true, events: true, opportunities: true, weekly: false, public: true, mentor: true, searchable: true });
+  const toggle = (k: keyof typeof prefs) => setPrefs(p => ({ ...p, [k]: !p[k] }));
 
   return (
     <AppLayout>
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-xl font-bold text-[#1A1F2E]" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Definições
-          </h1>
-          <p className="text-[13px] text-[#8896A5]">Gere a tua conta e preferências</p>
+      <div style={{ maxWidth: 640, margin: "0 auto" }}>
+        <div style={{ marginBottom: 28 }} className="animate-fade-up">
+          <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--n800)", marginBottom: 4 }}>Definições</h1>
+          <p style={{ fontSize: 14, color: "var(--n400)" }}>{currentUser.name}</p>
         </div>
 
-        {/* Account card */}
-        <div className="bg-white rounded-2xl border border-[#EDE8E3] shadow-soft p-5 mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-[#1E2D4E] flex items-center justify-center text-white font-bold text-lg">
-              {currentUser.initials}
+        <Section title="Notificações" icon={Bell}>
+          {[
+            { label: "Novos pedidos de introdução", key: "intro" },
+            { label: "Eventos relevantes para mim", key: "events" },
+            { label: "Oportunidades correspondentes", key: "opportunities" },
+            { label: "Emails e comunicações", key: "emails" },
+            { label: "Resumo semanal da comunidade", key: "weekly" },
+          ].map(({ label, key }) => (
+            <div key={key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid var(--n100)" }}>
+              <span style={{ fontSize: 14, color: "var(--n700)" }}>{label}</span>
+              <Toggle checked={prefs[key as keyof typeof prefs]} onChange={() => toggle(key as keyof typeof prefs)} />
             </div>
-            <div>
-              <p className="text-[14.5px] font-semibold text-[#1A1F2E]">{currentUser.name}</p>
-              <p className="text-[12.5px] text-[#8896A5]">{currentUser.memberNumber} · Membro desde {currentUser.memberSince}</p>
-            </div>
-            <button className="ml-auto text-[13px] text-[#3A7BC8] hover:text-[#1E2D4E] font-medium transition-colors">
-              Editar conta →
-            </button>
-          </div>
-        </div>
+          ))}
+        </Section>
 
-        {/* Settings sections */}
-        {sections.map(section => {
-          const Icon = section.icon;
-          return (
-            <div key={section.title} className="bg-white rounded-2xl border border-[#EDE8E3] shadow-soft mb-4 overflow-hidden">
-              <div className="px-5 py-4 border-b border-[#EDE8E3] flex items-center gap-2">
-                <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center", section.color)}>
-                  <Icon className="w-3.5 h-3.5" />
-                </div>
-                <h2 className="text-[14px] font-semibold text-[#1A1F2E]">{section.title}</h2>
-              </div>
-              <div className="divide-y divide-[#EDE8E3]">
-                {section.items.map(item => (
-                  <div key={item.key} className="px-5 py-4 flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-[13.5px] font-medium text-[#1A1F2E]">{item.label}</p>
-                      <p className="text-[12px] text-[#8896A5] mt-0.5">{item.desc}</p>
-                    </div>
-                    <Toggle checked={prefs[item.key] as boolean} onChange={() => toggle(item.key)} />
-                  </div>
-                ))}
-              </div>
+        <Section title="Privacidade & Visibilidade" icon={Eye}>
+          {[
+            { label: "Perfil público para alumni", key: "public" },
+            { label: "Disponível como mentor", key: "mentor" },
+            { label: "Encontrável na pesquisa", key: "searchable" },
+          ].map(({ label, key }) => (
+            <div key={key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid var(--n100)" }}>
+              <span style={{ fontSize: 14, color: "var(--n700)" }}>{label}</span>
+              <Toggle checked={prefs[key as keyof typeof prefs]} onChange={() => toggle(key as keyof typeof prefs)} />
             </div>
-          );
-        })}
+          ))}
+        </Section>
 
-        {/* Danger zone */}
-        <div className="bg-white rounded-2xl border border-[#EDE8E3] shadow-soft overflow-hidden">
-          <div className="px-5 py-4 border-b border-[#EDE8E3]">
-            <h2 className="text-[14px] font-semibold text-[#1A1F2E]">Conta</h2>
-          </div>
-          <div className="divide-y divide-[#EDE8E3]">
-            <button className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-[#FAF8F5] transition-colors">
-              <span className="text-[13.5px] text-[#4A5568]">Exportar dados</span>
-              <ChevronRight className="w-4 h-4 text-[#B8C4CC]" />
-            </button>
-            <button className="w-full px-5 py-4 flex items-center gap-3 text-left hover:bg-red-50 transition-colors group">
-              <LogOut className="w-4 h-4 text-[#8896A5] group-hover:text-red-500 transition-colors" />
-              <span className="text-[13.5px] text-[#8896A5] group-hover:text-red-600 transition-colors">Terminar sessão</span>
-            </button>
-          </div>
+        <div className="card-glass animate-fade-up delay-200" style={{ padding: "18px 22px" }}>
+          <button className="btn-ghost" style={{ width: "100%", justifyContent: "center", color: "var(--red)", borderColor: "rgba(192,57,43,0.20)", gap: 9 }}>
+            <LogOut style={{ width: 15, height: 15 }} /> Terminar sessão
+          </button>
         </div>
       </div>
     </AppLayout>

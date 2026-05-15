@@ -1,218 +1,103 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Shield, Users, Award, ChevronRight, Search, Heart } from "lucide-react";
+import Link from "next/link";
+import { Shield, Star, Users, Sparkles } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { businesses } from "@/data/demo";
-import { cn } from "@/lib/utils";
 
-const categories = ["Todos", "Legal", "SaaS / ClimaTech", "Creative Services", "Healthcare", "Finance / VC"];
-
-function BusinessCard({ biz }: { biz: typeof businesses[0] }) {
-  const [endorsed, setEndorsed] = useState(false);
-  const [endorseCount, setEndorseCount] = useState(biz.endorsements);
-
-  const handleEndorse = () => {
-    if (!endorsed) {
-      setEndorseCount((c: number) => c + 1);
-    } else {
-      setEndorseCount((c: number) => c - 1);
-    }
-    setEndorsed(!endorsed);
-  };
-
-  return (
-    <div className="bg-white rounded-2xl border border-[#EDE8E3] shadow-soft hover:shadow-card transition-all overflow-hidden card-hover">
-      {/* Header with perk */}
-      <div className="gradient-navy px-5 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-[11px] text-white/60 uppercase tracking-wide font-medium">Empresa Alumni</span>
-          {biz.trustBadge && (
-            <div className="flex items-center gap-1 bg-white/15 rounded-full px-2 py-0.5">
-              <Shield className="w-2.5 h-2.5 text-white" />
-              <span className="text-[10px] text-white font-medium">Verificada</span>
-            </div>
-          )}
-        </div>
-        <span className="text-[11px] text-white/50">Est. {biz.foundedYear}</span>
-      </div>
-
-      <div className="p-5">
-        {/* Business info */}
-        <div className="flex items-start gap-3 mb-3">
-          <div className="w-12 h-12 bg-[#FAF8F5] rounded-xl flex items-center justify-center text-2xl flex-shrink-0 border border-[#EDE8E3]">
-            {biz.logo}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-[15px] font-semibold text-[#1A1F2E]">{biz.name}</h3>
-            <p className="text-[12.5px] text-[#8896A5]">
-              por <span className="text-[#4A5568] font-medium">{biz.founder}</span> · {biz.city}
-            </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10.5px] bg-[#FAF8F5] border border-[#EDE8E3] text-[#4A5568] px-2 py-0.5 rounded-full">
-                {biz.category}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Rating */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="flex items-center gap-1">
-            {[1,2,3,4,5].map(i => (
-              <Star key={i} className={cn("w-3.5 h-3.5", i <= Math.floor(biz.rating) ? "text-amber-400 fill-amber-400" : "text-[#EDE8E3]")} />
-            ))}
-          </div>
-          <span className="text-[12.5px] font-semibold text-[#1A1F2E]">{biz.rating}</span>
-          <span className="text-[12px] text-[#8896A5]">({biz.reviewCount} reviews alumni)</span>
-        </div>
-
-        {/* Description */}
-        <p className="text-[13px] text-[#4A5568] leading-relaxed mb-3 line-clamp-2">
-          {biz.description}
-        </p>
-
-        {/* Featured review */}
-        <div className="bg-[#FAF8F5] rounded-xl p-3 mb-3 border border-[#EDE8E3]">
-          <p className="text-[12px] text-[#4A5568] italic leading-relaxed mb-1">
-            "{biz.featuredReview}"
-          </p>
-          <p className="text-[11px] text-[#8896A5] font-medium">— {biz.reviewerName}, alumni AAASE</p>
-        </div>
-
-        {/* Community perk */}
-        <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 mb-4">
-          <div className="flex items-center gap-2">
-            <Award className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-            <div>
-              <span className="text-[10.5px] font-semibold text-amber-800 uppercase tracking-wide">Benefício AAASE</span>
-              <p className="text-[12px] text-amber-700 mt-0.5">{biz.communityPerk}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Community stats */}
-        <div className="flex items-center gap-3 mb-4 text-[12px] text-[#8896A5]">
-          <div className="flex items-center gap-1">
-            <Users className="w-3 h-3" />
-            <span>{endorseCount} endorsements</span>
-          </div>
-          <span>·</span>
-          <div className="flex items-center gap-1">
-            <Shield className="w-3 h-3" />
-            <span>Verificada pela comunidade</span>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex gap-2">
-          <button
-            onClick={handleEndorse}
-            className={cn(
-              "flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12.5px] font-medium transition-all border",
-              endorsed
-                ? "bg-rose-50 text-rose-600 border-rose-200"
-                : "bg-[#FAF8F5] text-[#4A5568] border-[#EDE8E3] hover:border-[#B8AFA5]"
-            )}
-          >
-            <Heart className={cn("w-3.5 h-3.5", endorsed && "fill-rose-500")} />
-            {endorsed ? "Endossado" : "Endossar"}
-          </button>
-          <button className="flex-1 bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white text-[12.5px] font-medium rounded-xl py-2 transition-colors">
-            Ver & Contactar →
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+const categories = ["Todas", "Legal", "SaaS / ClimaTech", "Creative Services", "Healthcare", "Finance / VC"];
 
 export default function CommercePage() {
-  const [activeCategory, setActiveCategory] = useState("Todos");
-  const [search, setSearch] = useState("");
-
-  const filtered = businesses.filter(b => {
-    const matchesSearch = !search || b.name.toLowerCase().includes(search.toLowerCase()) || b.category.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = activeCategory === "Todos" || b.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const [activeCat, setActiveCat] = useState("Todas");
+  const filtered = businesses.filter(b => activeCat === "Todas" || b.category === activeCat);
 
   return (
     <AppLayout>
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#1A1F2E] mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Empresas Alumni
-          </h1>
-          <p className="text-[14px] text-[#8896A5]">
-            Suporte à comunidade · {businesses.length} empresas verificadas
-          </p>
+      <div style={{ maxWidth: 1050, margin: "0 auto" }}>
+        <div style={{ marginBottom: 28 }} className="animate-fade-up">
+          <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--n800)", marginBottom: 6 }}>Empresas Alumni</h1>
+          <p style={{ fontSize: 14, color: "var(--n400)" }}>Negócios fundados por membros da comunidade AAASE</p>
         </div>
 
-        {/* Trust Banner */}
-        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/60 rounded-2xl p-5 mb-6">
-          <div className="flex items-start gap-3">
-            <div className="p-2.5 bg-emerald-100 rounded-xl flex-shrink-0">
-              <Shield className="w-5 h-5 text-emerald-600" />
+        {/* Trust banner */}
+        <div className="ai-strip animate-fade-up delay-100" style={{ padding: "16px 22px", marginBottom: 24 }}>
+          <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+            <div style={{ width: 36, height: 36, borderRadius: 11, background: "var(--gold-muted)", border: "1px solid rgba(232,160,32,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Shield style={{ width: 16, height: 16, color: "var(--gold)" }} />
             </div>
-            <div>
-              <h2 className="text-[14.5px] font-semibold text-emerald-900 mb-1">Confiança garantida pela comunidade</h2>
-              <p className="text-[13px] text-emerald-800 leading-relaxed">
-                Cada empresa é fundada por um alumni verificado AAASE. Todos os reviews são escritos por membros reais da rede. 
-                <strong className="font-semibold"> Endossa quando tens experiência positiva.</strong>
-              </p>
-            </div>
+            <p style={{ fontSize: 13.5, color: "var(--n700)" }}>
+              Todos os negócios são <strong style={{ color: "var(--n800)" }}>fundados por alumni verificados</strong>. As reviews são exclusivas de membros da comunidade.
+            </p>
           </div>
         </div>
 
-        {/* Search */}
-        <div className="relative mb-4">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896A5]" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Pesquisar empresas..."
-            className="w-full pl-11 pr-4 py-3 bg-white border border-[#D9D2C9] rounded-xl text-[13.5px] text-[#1A1F2E] placeholder-[#B8C4CC] focus:outline-none focus:ring-2 focus:ring-[#3A7BC8]/20 focus:border-[#3A7BC8] transition-all shadow-soft"
-          />
-        </div>
-
-        {/* Category Filters */}
-        <div className="flex gap-2 flex-wrap mb-5">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={cn(
-                "px-3 py-1.5 rounded-xl text-[12.5px] font-medium transition-all",
-                activeCategory === cat
-                  ? "bg-[#1E2D4E] text-white shadow-soft"
-                  : "bg-white text-[#4A5568] border border-[#EDE8E3] hover:border-[#B8AFA5]"
-              )}
-            >
-              {cat}
+        {/* Categories */}
+        <div className="animate-fade-up delay-150" style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+          {categories.map(c => (
+            <button key={c} onClick={() => setActiveCat(c)}
+              style={{ padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s", background: activeCat === c ? "var(--blue)" : "white", color: activeCat === c ? "white" : "var(--n600)", border: activeCat === c ? "none" : "1px solid var(--n200)", boxShadow: activeCat === c ? "0 2px 8px rgba(46,109,180,0.25)" : "var(--shadow-xs)" } as React.CSSProperties}>
+              {c}
             </button>
           ))}
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          {filtered.map((biz) => (
-            <BusinessCard key={biz.id} biz={biz} />
-          ))}
-        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
+          {filtered.map((biz, i) => (
+            <div key={biz.id} className="card-glass animate-fade-up" style={{ padding: "24px", animationDelay: `${i * 0.07}s` }}>
+              {/* Header */}
+              <div style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 14 }}>
+                <div style={{ width: 50, height: 50, borderRadius: 14, background: "var(--n100)", border: "1px solid var(--n150)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>
+                  {biz.logo}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 15, fontWeight: 650, color: "var(--n800)", letterSpacing: "-0.015em", marginBottom: 3 }}>{biz.name}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span className="pill pill-blue" style={{ fontSize: 10.5 }}>{biz.category}</span>
+                    {biz.trustBadge && (
+                      <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 500, color: "var(--blue-dark)" }}>
+                        <Shield style={{ width: 10, height: 10 }} /> Alumni Trust
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
 
-        {/* List your business CTA */}
-        <div className="mt-6 bg-[#FAF8F5] border border-[#EDE8E3] border-dashed rounded-2xl p-6 text-center">
-          <div className="text-2xl mb-2">🏪</div>
-          <h3 className="text-[15px] font-semibold text-[#1A1F2E] mb-1">Tens uma empresa?</h3>
-          <p className="text-[13px] text-[#8896A5] mb-4">
-            Lista a tua empresa e acede à rede de clientes alumni de confiança.
-          </p>
-          <button className="px-5 py-2.5 bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white text-[13px] font-medium rounded-xl transition-colors">
-            Registar empresa →
-          </button>
+              {/* Rating + founder */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ display: "flex", gap: 2 }}>
+                    {[1,2,3,4,5].map(s => <Star key={s} style={{ width: 12, height: 12, fill: s <= Math.round(biz.rating) ? "var(--gold)" : "var(--n200)", color: s <= Math.round(biz.rating) ? "var(--gold)" : "var(--n200)" }} />)}
+                  </div>
+                  <span style={{ fontSize: 12.5, fontWeight: 600, color: "var(--n700)" }}>{biz.rating}</span>
+                  <span style={{ fontSize: 12, color: "var(--n400)" }}>({biz.reviewCount})</span>
+                </div>
+                <span style={{ fontSize: 12, color: "var(--n400)", display: "flex", alignItems: "center", gap: 4 }}>
+                  <Users style={{ width: 11, height: 11 }} />{biz.endorsements} endossos
+                </span>
+              </div>
+
+              <p style={{ fontSize: 13, color: "var(--n600)", lineHeight: 1.6, marginBottom: 14 }}>{biz.description}</p>
+
+              {/* Perk */}
+              <div style={{ background: "var(--gold-muted)", border: "1px solid rgba(232,160,32,0.18)", borderRadius: 12, padding: "10px 13px", marginBottom: 14 }}>
+                <div style={{ fontSize: 10.5, fontWeight: 600, color: "#7A4F00", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.04em" }}>✦ Benefício alumni</div>
+                <div style={{ fontSize: 12.5, color: "#5A3700", fontWeight: 500 }}>{biz.communityPerk}</div>
+              </div>
+
+              {/* Featured review */}
+              <div style={{ background: "var(--n50)", borderRadius: 12, padding: "11px 13px", marginBottom: 16, borderLeft: "3px solid var(--n200)" }}>
+                <p style={{ fontSize: 12.5, color: "var(--n600)", lineHeight: 1.55, fontStyle: "italic", marginBottom: 5 }}>"{biz.featuredReview}"</p>
+                <div style={{ fontSize: 11.5, color: "var(--n400)", fontWeight: 500 }}>— {biz.reviewerName}</div>
+              </div>
+
+              <div style={{ display: "flex", gap: 8 }}>
+                <button className="btn-primary" style={{ flex: 1, fontSize: 13, padding: "9px", borderRadius: 12 }}>Ver detalhes</button>
+                <button className="btn-ghost" style={{ fontSize: 13, padding: "9px 14px" }}>Recomendar</button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </AppLayout>

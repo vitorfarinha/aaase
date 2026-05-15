@@ -2,218 +2,106 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Briefcase, Users, TrendingUp, Clock, MapPin, Sparkles, ChevronRight, Filter } from "lucide-react";
+import { Sparkles, MapPin, Calendar, ChevronRight, Users } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { opportunities } from "@/data/demo";
-import { cn, getOpportunityTypeLabel, getOpportunityTypeColor } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
-const typeFilters = ["Todas", "Emprego", "Consultoria", "Mentoria", "Orador", "Investimento", "Voluntariado", "Colaboração"];
-
-function OpportunityCard({ opp }: { opp: typeof opportunities[0] }) {
-  const [applied, setApplied] = useState(false);
-
-  return (
-    <div className="bg-white rounded-2xl border border-[#EDE8E3] shadow-soft hover:shadow-card transition-all p-5 card-hover">
-      {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex-1 min-w-0 mr-3">
-          <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className={cn("text-[11px] px-2.5 py-0.5 rounded-full font-medium", getOpportunityTypeColor(opp.type))}>
-              {getOpportunityTypeLabel(opp.type)}
-            </span>
-            {opp.relevanceScore >= 85 && (
-              <span className="text-[10.5px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
-                <Sparkles className="w-2.5 h-2.5" />
-                {opp.relevanceScore}% match
-              </span>
-            )}
-          </div>
-          <h3 className="text-[14.5px] font-semibold text-[#1A1F2E] leading-snug">{opp.title}</h3>
-        </div>
-        <div className="text-right flex-shrink-0">
-          <div className={cn(
-            "text-[12px] font-bold px-2.5 py-1 rounded-xl",
-            opp.relevanceScore >= 90 ? "bg-emerald-50 text-emerald-700" :
-            opp.relevanceScore >= 75 ? "bg-blue-50 text-blue-700" :
-            "bg-amber-50 text-amber-700"
-          )}>
-            {opp.relevanceScore}%
-          </div>
-        </div>
-      </div>
-
-      {/* Company & Location */}
-      <div className="flex items-center gap-3 mb-3 text-[12.5px] text-[#8896A5]">
-        <span className="font-medium text-[#4A5568]">{opp.company}</span>
-        <span>·</span>
-        <div className="flex items-center gap-1">
-          <MapPin className="w-3 h-3" />
-          {opp.city}, {opp.country}
-        </div>
-        {opp.deadline && (
-          <>
-            <span>·</span>
-            <div className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              {opp.deadline}
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Description */}
-      <p className="text-[13px] text-[#4A5568] leading-relaxed mb-3 line-clamp-2">
-        {opp.description}
-      </p>
-
-      {/* AI Why Matched */}
-      <div className="bg-amber-50/60 border border-amber-100 rounded-xl p-3 mb-3">
-        <div className="flex items-start gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
-          <p className="text-[11.5px] text-amber-800 leading-relaxed">
-            <span className="font-semibold">Porquê match: </span>{opp.whyMatched}
-          </p>
-        </div>
-      </div>
-
-      {/* Mutual connections */}
-      {opp.mutualConnections.length > 0 && (
-        <div className="flex items-center gap-2 mb-3">
-          <Users className="w-3 h-3 text-[#8896A5]" />
-          <span className="text-[12px] text-[#8896A5]">
-            Conexões: <span className="text-[#4A5568] font-medium">{opp.mutualConnections.join(", ")}</span>
-          </span>
-        </div>
-      )}
-
-      {/* Tags */}
-      <div className="flex flex-wrap gap-1.5 mb-4">
-        {opp.tags.map((tag) => (
-          <span key={tag} className="text-[10.5px] text-[#4A5568] bg-[#FAF8F5] border border-[#EDE8E3] px-2 py-0.5 rounded-full">
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      {/* Compensation */}
-      {opp.compensation && (
-        <div className="text-[12.5px] font-medium text-emerald-700 bg-emerald-50 rounded-xl px-3 py-2 mb-4">
-          💰 {opp.compensation}
-        </div>
-      )}
-
-      {/* Actions */}
-      <div className="flex gap-2">
-        <Link href="/concierge" className="flex-1 text-center text-[12.5px] font-medium text-[#4A5568] bg-[#FAF8F5] hover:bg-[#F0EBE3] border border-[#EDE8E3] rounded-xl py-2 transition-colors">
-          Pedir introdução
-        </Link>
-        <button
-          onClick={() => setApplied(!applied)}
-          className={cn(
-            "flex-1 text-[12.5px] font-medium rounded-xl py-2 transition-all",
-            applied
-              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-              : "bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white"
-          )}
-        >
-          {applied ? "Candidatura enviada ✓" : "Candidatar"}
-        </button>
-      </div>
-    </div>
-  );
-}
+const types = ["Todas", "job", "investment", "mentoring", "speaking", "collaboration"];
+const typeLabel: Record<string, string> = { job: "Emprego", investment: "Investimento", mentoring: "Mentoria", speaking: "Palestra", collaboration: "Colaboração", consulting: "Consultoria" };
+const typeColor: Record<string, string> = { job: "pill-blue", investment: "pill-gold", mentoring: "pill-green", speaking: "pill-red", collaboration: "pill-neutral" };
 
 export default function OpportunitiesPage() {
   const [activeType, setActiveType] = useState("Todas");
-  const [sortBy, setSortBy] = useState("match");
 
-  const sorted = [...opportunities].sort((a, b) =>
-    sortBy === "match" ? b.relevanceScore - a.relevanceScore : 0
-  );
+  const filtered = opportunities.filter(o => activeType === "Todas" || o.type === activeType);
 
   return (
     <AppLayout>
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#1A1F2E] mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Oportunidades
-          </h1>
-          <p className="text-[14px] text-[#8896A5]">
-            {opportunities.length} oportunidades · Ordenadas por compatibilidade com o teu perfil
-          </p>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <div style={{ marginBottom: 28 }} className="animate-fade-up">
+          <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--n800)", marginBottom: 6 }}>Oportunidades</h1>
+          <p style={{ fontSize: 14, color: "var(--n400)" }}>Correspondências com IA baseadas no teu perfil e rede</p>
         </div>
 
-        {/* AI Match Banner */}
-        <div className="bg-gradient-to-br from-[#1E2D4E] to-[#2A3F6E] rounded-2xl p-5 mb-6 text-white">
-          <div className="flex items-start gap-4">
-            <div className="p-2.5 bg-white/10 rounded-xl flex-shrink-0">
-              <Sparkles className="w-5 h-5 text-amber-300" />
+        {/* AI Banner */}
+        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 20, padding: "20px 24px", marginBottom: 24, color: "white" }}>
+          <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Sparkles style={{ width: 18, height: 18 }} />
             </div>
-            <div>
-              <div className="text-[12px] font-semibold text-white/60 uppercase tracking-wide mb-1">AI Matching Activado</div>
-              <p className="text-[14px] text-white/85 leading-relaxed mb-3">
-                A IA analisou o teu perfil e identificou <strong className="text-white">5 oportunidades</strong> com alta compatibilidade.
-                A melhor match é o <strong className="text-white">Head of Product na GreenLeap</strong> — 96% de compatibilidade.
-              </p>
-              <Link href="/concierge" className="inline-flex items-center gap-2 text-[12.5px] bg-white/15 hover:bg-white/25 text-white px-3 py-2 rounded-xl transition-colors font-medium">
-                <Sparkles className="w-3.5 h-3.5" />
-                Explorar com AI Concierge
-              </Link>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 3 }}>5 oportunidades encontradas para ti</div>
+              <div style={{ fontSize: 12.5, color: "rgba(255,255,255,0.65)" }}>O AI Concierge pode ajudar-te a navegar e a pedir introduções directamente</div>
             </div>
+            <Link href="/concierge" style={{ fontSize: 13, fontWeight: 500, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 12, padding: "9px 18px", color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+              Abrir Concierge
+            </Link>
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="flex gap-2 flex-wrap mb-4">
-          {typeFilters.map((type) => (
-            <button
-              key={type}
-              onClick={() => setActiveType(type)}
-              className={cn(
-                "px-3 py-1.5 rounded-xl text-[12.5px] font-medium transition-all",
-                activeType === type
-                  ? "bg-[#1E2D4E] text-white shadow-soft"
-                  : "bg-white text-[#4A5568] border border-[#EDE8E3] hover:border-[#B8AFA5]"
-              )}
-            >
-              {type}
-            </button>
+        {/* Type filters */}
+        <div className="animate-fade-up delay-150" style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+          {types.map(t => (
+            <button key={t} onClick={() => setActiveType(t)}
+              style={{ padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s", background: activeType === t ? "var(--blue)" : "var(--n0)", color: activeType === t ? "white" : "var(--n600)", border: activeType === t ? "none" : "1px solid var(--n200)", boxShadow: activeType === t ? "0 2px 8px rgba(46,109,180,0.25)" : "var(--shadow-xs)" } as React.CSSProperties}
+            >{t === "Todas" ? "Todas" : typeLabel[t] || t}</button>
           ))}
         </div>
 
-        {/* Sort */}
-        <div className="flex items-center justify-between mb-5">
-          <p className="text-[13px] text-[#8896A5]">{sorted.length} oportunidades</p>
-          <div className="flex items-center gap-2">
-            <span className="text-[12.5px] text-[#8896A5]">Ordenar por:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="text-[12.5px] text-[#4A5568] bg-white border border-[#D9D2C9] rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#3A7BC8]/20"
-            >
-              <option value="match">Compatibilidade</option>
-              <option value="recent">Mais recentes</option>
-            </select>
-          </div>
-        </div>
+        {/* Cards */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {filtered.map((opp, i) => (
+            <div key={opp.id} className="card-glass animate-fade-up" style={{ padding: "22px 24px", animationDelay: `${i * 0.07}s` }}>
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, marginBottom: 14 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 6 }}>
+                    <span className={`pill ${typeColor[opp.type] || "pill-neutral"}`}>{typeLabel[opp.type] || opp.type}</span>
+                    {opp.compensation && <span className="pill pill-green" style={{ fontSize: 11 }}>{opp.compensation}</span>}
+                  </div>
+                  <h3 style={{ fontSize: 16, fontWeight: 650, color: "var(--n800)", letterSpacing: "-0.02em", marginBottom: 4 }}>{opp.title}</h3>
+                  <div style={{ fontSize: 13, color: "var(--n500)", display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                    <span>{opp.company}</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: 4 }}><MapPin style={{ width: 11, height: 11 }} />{opp.city}</span>
+                    {opp.deadline && <span style={{ display: "flex", alignItems: "center", gap: 4 }}><Calendar style={{ width: 11, height: 11 }} />Prazo: {opp.deadline}</span>}
+                  </div>
+                </div>
+                {/* Relevance score */}
+                <div style={{ flexShrink: 0, textAlign: "center" }}>
+                  <div style={{ width: 56, height: 56, borderRadius: "50%", background: opp.relevanceScore >= 90 ? "#EDFAF3" : "var(--blue-muted)", border: `2px solid ${opp.relevanceScore >= 90 ? "#22C55E" : "var(--blue)"}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: 16, fontWeight: 700, color: opp.relevanceScore >= 90 ? "#166534" : "var(--blue-dark)", letterSpacing: "-0.02em" }}>{opp.relevanceScore}</span>
+                  </div>
+                  <div style={{ fontSize: 10, color: "var(--n400)", marginTop: 4, fontWeight: 500 }}>match</div>
+                </div>
+              </div>
 
-        {/* Opportunities Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          {sorted.map((opp) => (
-            <OpportunityCard key={opp.id} opp={opp} />
+              <p style={{ fontSize: 13.5, color: "var(--n600)", lineHeight: 1.6, marginBottom: 14 }}>{opp.description}</p>
+
+              {/* Why matched */}
+              <div style={{ background: "var(--blue-muted)", border: "1px solid rgba(46,109,180,0.12)", borderRadius: 12, padding: "10px 14px", marginBottom: 14, display: "flex", gap: 8 }}>
+                <Sparkles style={{ width: 13, height: 13, color: "var(--blue)", flexShrink: 0, marginTop: 1 }} />
+                <p style={{ fontSize: 12, color: "var(--blue-dark)", lineHeight: 1.5 }}><strong>Porquê foi seleccionado:</strong> {opp.whyMatched}</p>
+              </div>
+
+              {/* Mutual connections + tags */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  {opp.tags.slice(0, 4).map(t => <span key={t} className="pill pill-neutral" style={{ fontSize: 11 }}>{t}</span>)}
+                </div>
+                {opp.mutualConnections.length > 0 && (
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--n500)" }}>
+                    <Users style={{ width: 12, height: 12 }} />
+                    Conexões: {opp.mutualConnections.join(", ")}
+                  </div>
+                )}
+              </div>
+
+              <div style={{ marginTop: 16, display: "flex", gap: 10 }}>
+                <Link href="/concierge" className="btn-primary" style={{ fontSize: 13, padding: "9px 20px", borderRadius: 12 }}>Expressar interesse</Link>
+                <button className="btn-ghost" style={{ fontSize: 13, padding: "9px 18px" }}>Guardar</button>
+              </div>
+            </div>
           ))}
-        </div>
-
-        {/* Post Opportunity */}
-        <div className="mt-6 bg-[#FAF8F5] border border-[#EDE8E3] rounded-2xl p-5 text-center">
-          <h3 className="text-[15px] font-semibold text-[#1A1F2E] mb-1">Tens uma oportunidade para partilhar?</h3>
-          <p className="text-[13px] text-[#8896A5] mb-4">
-            Partilha empregos, colaborações, ou procura de mentores com a comunidade AAASE.
-          </p>
-          <button className="px-5 py-2.5 bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white text-[13px] font-medium rounded-xl transition-colors">
-            Publicar oportunidade
-          </button>
         </div>
       </div>
     </AppLayout>

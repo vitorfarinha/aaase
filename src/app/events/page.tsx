@@ -1,135 +1,88 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, MapPin, Clock, Users, Sparkles, CheckCircle } from "lucide-react";
+import { MapPin, Clock, Users, Sparkles } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { events } from "@/data/demo";
-import { cn, getEventTypeEmoji } from "@/lib/utils";
 
-function EventCard({ event }: { event: typeof events[0] }) {
-  const [registered, setRegistered] = useState(false);
-  const spotsLeft = event.capacity - event.attendeeCount;
-  const isFull = spotsLeft <= 0;
+const typeLabel: Record<string, string> = { dinner: "Jantar", talk: "Talk", reunion: "Reencontro", networking: "Networking", workshop: "Workshop", webinar: "Webinar" };
+const typeClass: Record<string, string> = { dinner: "pill-red", talk: "pill-blue", reunion: "pill-blue", networking: "pill-gold", workshop: "pill-green", webinar: "pill-neutral" };
+
+export default function EventsPage() {
+  const [rsvped, setRsvped] = useState<string[]>([]);
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EDE8E3] shadow-soft hover:shadow-card transition-all overflow-hidden card-hover">
-      {/* Date header */}
-      <div className="gradient-navy px-5 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="text-2xl">{getEventTypeEmoji(event.type)}</div>
+    <AppLayout>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <div style={{ marginBottom: 28 }} className="animate-fade-up">
+          <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--n800)", marginBottom: 6 }}>Eventos</h1>
+          <p style={{ fontSize: 14, color: "var(--n400)" }}>Encontros exclusivos da comunidade alumni</p>
+        </div>
+
+        {/* Featured */}
+        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 24, padding: "32px 36px", marginBottom: 24, color: "white" }}>
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <span className="pill" style={{ background: "rgba(255,255,255,0.18)", color: "white", fontSize: 11, marginBottom: 16, display: "inline-block" }}>🎟 Destaque</span>
+            <h2 style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.025em", marginBottom: 10 }}>{events[0].title}</h2>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.68)", lineHeight: 1.6, marginBottom: 20, maxWidth: 500 }}>{events[0].description}</p>
+            <div style={{ display: "flex", gap: 20, fontSize: 13, color: "rgba(255,255,255,0.65)", marginBottom: 24 }}>
+              <span style={{ display: "flex", gap: 6, alignItems: "center" }}><Clock style={{ width: 13, height: 13 }} />{events[0].date} · {events[0].time}</span>
+              <span style={{ display: "flex", gap: 6, alignItems: "center" }}><MapPin style={{ width: 13, height: 13 }} />{events[0].location}</span>
+              <span style={{ display: "flex", gap: 6, alignItems: "center" }}><Users style={{ width: 13, height: 13 }} />{events[0].attendeeCount}/{events[0].capacity}</span>
+            </div>
+            <div style={{ display: "flex", gap: 12 }}>
+              <button onClick={() => setRsvped(r => r.includes(events[0].id) ? r.filter(x => x !== events[0].id) : [...r, events[0].id])}
+                style={{ padding: "11px 26px", borderRadius: 14, fontSize: 13.5, fontWeight: 600, cursor: "pointer", border: "none", background: rsvped.includes(events[0].id) ? "rgba(255,255,255,0.20)" : "white", color: rsvped.includes(events[0].id) ? "white" : "var(--blue-dark)", transition: "all 0.15s", fontFamily: "inherit" }}>
+                {rsvped.includes(events[0].id) ? "✓ Inscrito" : "Inscrever agora"}
+              </button>
+              <div style={{ padding: "11px 20px", borderRadius: 14, fontSize: 13, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)", color: "white" }}>
+                {events[0].price || "Gratuito"}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* AI who to meet */}
+        <div className="ai-strip animate-fade-up delay-150" style={{ padding: "16px 20px", marginBottom: 24, display: "flex", gap: 14, alignItems: "flex-start" }}>
+          <Sparkles style={{ width: 16, height: 16, color: "var(--gold)", flexShrink: 0, marginTop: 2 }} />
           <div>
-            <div className="text-[12px] text-white/60">{event.date}</div>
-            <div className="text-[13px] font-semibold text-white">{event.time}</div>
-          </div>
-        </div>
-        <div className="text-right">
-          <div className={cn(
-            "text-[11px] font-medium px-2.5 py-1 rounded-full",
-            isFull ? "bg-red-500/20 text-red-200" :
-            spotsLeft <= 5 ? "bg-amber-500/20 text-amber-200" :
-            "bg-white/10 text-white/70"
-          )}>
-            {isFull ? "Esgotado" : `${spotsLeft} lugares`}
-          </div>
-        </div>
-      </div>
-
-      <div className="p-5">
-        <div className="flex items-start gap-2 mb-2">
-          {event.isVirtual && (
-            <span className="text-[10.5px] bg-sky-50 text-sky-700 px-2 py-0.5 rounded-full font-medium">Online</span>
-          )}
-          <span className={cn(
-            "text-[10.5px] px-2 py-0.5 rounded-full font-medium",
-            event.type === "dinner" ? "bg-rose-50 text-rose-700" :
-            event.type === "talk" ? "bg-purple-50 text-purple-700" :
-            event.type === "reunion" ? "bg-blue-50 text-blue-700" :
-            "bg-amber-50 text-amber-700"
-          )}>
-            {event.type === "dinner" ? "Jantar" : event.type === "talk" ? "Talk" : event.type === "reunion" ? "Summit" : event.type === "workshop" ? "Workshop" : "Networking"}
-          </span>
-        </div>
-
-        <h3 className="text-[15px] font-semibold text-[#1A1F2E] mb-1 leading-snug">{event.title}</h3>
-
-        <div className="flex items-center gap-2 text-[12px] text-[#8896A5] mb-3">
-          <MapPin className="w-3 h-3" />
-          <span>{event.location}</span>
-        </div>
-
-        <p className="text-[13px] text-[#4A5568] leading-relaxed mb-3 line-clamp-2">
-          {event.description}
-        </p>
-
-        {/* AI suggestion */}
-        <div className="bg-amber-50/60 rounded-xl p-3 mb-3">
-          <div className="flex items-start gap-1.5">
-            <Sparkles className="w-3 h-3 text-amber-500 flex-shrink-0 mt-0.5" />
-            <p className="text-[11.5px] text-amber-800">
-              <strong className="font-semibold">IA sugere: </strong>
-              {event.type === "dinner" ? "Óptimo para conectar com Sofia e Rui Costa — ambos confirmados." :
-               event.type === "talk" ? "Maria Almeida está a apresentar — aproveita para te apresentar." :
-               "3 membros da tua rede estão inscritos."}
+            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--n800)", marginBottom: 4 }}>✦ AI — Quem encontrar neste evento</div>
+            <p style={{ fontSize: 13, color: "var(--n600)", lineHeight: 1.55 }}>
+              <strong>Sofia Carvalho</strong> e <strong>Rui Costa</strong> estão inscritos. Baseado nos teus interesses em ClimaTech e VC, estas conexões podem ser particularmente valiosas.
             </p>
           </div>
         </div>
 
-        {/* Attendees & price */}
-        <div className="flex items-center justify-between mb-4 text-[12px] text-[#8896A5]">
-          <div className="flex items-center gap-1.5">
-            <Users className="w-3 h-3" />
-            <span>{event.attendeeCount}/{event.capacity} inscritos</span>
-          </div>
-          {event.price && (
-            <span className="font-medium text-[#4A5568]">{event.price}</span>
-          )}
-        </div>
-
-        {/* Action */}
-        <button
-          onClick={() => !isFull && setRegistered(!registered)}
-          disabled={isFull}
-          className={cn(
-            "w-full text-[12.5px] font-medium rounded-xl py-2.5 transition-all",
-            isFull ? "bg-[#FAF8F5] text-[#B8C4CC] border border-[#EDE8E3] cursor-not-allowed" :
-            registered ? "bg-emerald-50 text-emerald-700 border border-emerald-200" :
-            "bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white"
-          )}
-        >
-          {isFull ? "Esgotado" : registered ? "Inscrito ✓" : "Inscrever-me"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export default function EventsPage() {
-  return (
-    <AppLayout>
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#1A1F2E] mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Eventos
-          </h1>
-          <p className="text-[14px] text-[#8896A5]">
-            {events.length} eventos próximos · Organizados pela comunidade AAASE
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
+        {/* Event list */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {events.slice(1).map((ev, i) => (
+            <div key={ev.id} className="card-glass animate-fade-up" style={{ padding: "20px 24px", display: "flex", gap: 18, alignItems: "flex-start", animationDelay: `${i * 0.07}s` }}>
+              <div style={{ background: "var(--blue)", borderRadius: 14, padding: "12px 16px", textAlign: "center", flexShrink: 0, color: "white", minWidth: 56 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.05em", opacity: 0.65 }}>{ev.date.split(" ")[1]?.toUpperCase()}</div>
+                <div style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.1 }}>{ev.date.split(" ")[0]}</div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 6, alignItems: "center" }}>
+                  <span className={`pill ${typeClass[ev.type]}`} style={{ fontSize: 10.5 }}>{typeLabel[ev.type]}</span>
+                  {ev.isVirtual && <span className="pill pill-neutral" style={{ fontSize: 10.5 }}>Online</span>}
+                </div>
+                <h3 style={{ fontSize: 15.5, fontWeight: 650, color: "var(--n800)", letterSpacing: "-0.02em", marginBottom: 6 }}>{ev.title}</h3>
+                <p style={{ fontSize: 13, color: "var(--n500)", lineHeight: 1.55, marginBottom: 10 }}>{ev.description}</p>
+                <div style={{ display: "flex", gap: 16, fontSize: 12.5, color: "var(--n400)", flexWrap: "wrap" }}>
+                  <span style={{ display: "flex", gap: 5, alignItems: "center" }}><Clock style={{ width: 12, height: 12 }} />{ev.time}</span>
+                  <span style={{ display: "flex", gap: 5, alignItems: "center" }}><MapPin style={{ width: 12, height: 12 }} />{ev.isVirtual ? "Online" : ev.location}</span>
+                  <span style={{ display: "flex", gap: 5, alignItems: "center" }}><Users style={{ width: 12, height: 12 }} />{ev.attendeeCount}/{ev.capacity} inscritos</span>
+                </div>
+              </div>
+              <div style={{ flexShrink: 0 }}>
+                <button onClick={() => setRsvped(r => r.includes(ev.id) ? r.filter(x => x !== ev.id) : [...r, ev.id])} className="btn-primary"
+                  style={{ fontSize: 12.5, padding: "9px 18px", borderRadius: 12, background: rsvped.includes(ev.id) ? "#22C55E" : "var(--blue)" }}>
+                  {rsvped.includes(ev.id) ? "✓ Inscrito" : "Inscrever"}
+                </button>
+                {ev.price && <div style={{ fontSize: 11, color: "var(--n400)", textAlign: "center", marginTop: 6 }}>{ev.price}</div>}
+              </div>
+            </div>
           ))}
-        </div>
-
-        <div className="mt-6 bg-[#FAF8F5] border border-[#EDE8E3] border-dashed rounded-2xl p-6 text-center">
-          <h3 className="text-[15px] font-semibold text-[#1A1F2E] mb-1">Organizar um evento</h3>
-          <p className="text-[13px] text-[#8896A5] mb-4">
-            Propõe um evento para a comunidade AAASE.
-          </p>
-          <button className="px-5 py-2.5 bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white text-[13px] font-medium rounded-xl transition-colors">
-            Propor evento
-          </button>
         </div>
       </div>
     </AppLayout>

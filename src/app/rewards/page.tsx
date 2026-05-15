@@ -1,229 +1,106 @@
 "use client";
 
 import { useState } from "react";
-import { Award, Shield, Sparkles, QrCode, Copy, CheckCircle, Star, ArrowRight } from "lucide-react";
+import { Shield, Sparkles } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { rewards, currentUser } from "@/data/demo";
-import { cn } from "@/lib/utils";
 
-function DigitalCard() {
-  const [flipped, setFlipped] = useState(false);
+export default function RewardsPage() {
+  const [redeemed, setRedeemed] = useState<string[]>([]);
 
   return (
-    <div className="mb-6">
-      <div
-        className="relative cursor-pointer select-none"
-        style={{ perspective: "1000px" }}
-        onClick={() => setFlipped(!flipped)}
-      >
-        <div
-          className="relative w-full transition-transform duration-500"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-            height: "200px",
-          }}
-        >
-          {/* Front */}
-          <div className="absolute inset-0 rounded-2xl gradient-navy shadow-elevated overflow-hidden"
-            style={{ backfaceVisibility: "hidden" }}>
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-6 right-8 w-40 h-40 rounded-full border-2 border-white"></div>
-              <div className="absolute top-16 right-20 w-24 h-24 rounded-full border border-white"></div>
-              <div className="absolute -bottom-8 left-1/4 w-56 h-56 rounded-full border border-white/50"></div>
-            </div>
-            <div className="relative z-10 p-6 h-full flex flex-col justify-between text-white">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-[11px] text-white/50 uppercase tracking-[0.15em] mb-1">Antigos Alunos Salesianos de Estoril</div>
-                  <div className="text-xl font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>AAASE</div>
-                </div>
-                <div className="flex items-center gap-1.5 bg-white/10 rounded-lg px-2 py-1">
-                  <Shield className="w-3 h-3 text-emerald-300" />
-                  <span className="text-[10px] text-white/80 font-medium">Verificado</span>
-                </div>
-              </div>
+    <AppLayout>
+      <div style={{ maxWidth: 960, margin: "0 auto" }}>
+        <div style={{ marginBottom: 28 }} className="animate-fade-up">
+          <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--n800)", marginBottom: 6 }}>Benefícios & Cartão</h1>
+          <p style={{ fontSize: 14, color: "var(--n400)" }}>Vantagens exclusivas da comunidade alumni</p>
+        </div>
 
+        {/* Digital member card */}
+        <div className="hero-gradient animate-fade-up delay-100" style={{ borderRadius: 24, padding: "32px 36px", marginBottom: 28, color: "white", maxWidth: 520 }}>
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28 }}>
               <div>
-                <div className="text-[18px] font-bold mb-0.5">{currentUser.name}</div>
-                <div className="text-[12px] text-white/60">
-                  Turma {currentUser.graduationYear} · {currentUser.memberNumber}
-                </div>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)", marginBottom: 6 }}>Cartão de Membro</div>
+                <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.01em" }}>AAASE Alumni Network</div>
               </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-[10px] text-white/40 mb-0.5">Trust Score</div>
-                  <div className="text-lg font-bold">{currentUser.trustScore}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-white/40 mb-0.5">Membro desde</div>
-                  <div className="text-[13px] font-medium">{currentUser.memberSince}</div>
-                </div>
-                <div className="text-[11px] text-white/30 italic">Virar →</div>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.14)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Shield style={{ width: 17, height: 17, color: "rgba(255,255,255,0.75)" }} />
               </div>
             </div>
-          </div>
 
-          {/* Back */}
-          <div
-            className="absolute inset-0 rounded-2xl gradient-navy shadow-elevated overflow-hidden flex items-center justify-center"
-            style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-          >
-            <div className="text-center p-6">
-              <div className="w-28 h-28 bg-white rounded-xl mx-auto mb-3 flex items-center justify-center">
-                <div className="grid grid-cols-5 gap-0.5">
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-0.025em", marginBottom: 6 }}>{currentUser.name}</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)" }}>Turma {currentUser.graduationYear} · {currentUser.memberNumber}</div>
+            </div>
+
+            {/* QR code mock */}
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+              <div>
+                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.40)", marginBottom: 4 }}>Trust Score</div>
+                <div style={{ fontSize: 26, fontWeight: 750, letterSpacing: "-0.04em" }}>{currentUser.trustScore}</div>
+              </div>
+              <div style={{ width: 64, height: 64, background: "rgba(255,255,255,0.12)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(5,8px)", gap: 2 }}>
                   {Array.from({ length: 25 }).map((_, i) => (
-                    <div key={i} className={cn("w-4 h-4 rounded-sm", Math.random() > 0.5 ? "bg-[#1E2D4E]" : "bg-transparent")} />
+                    <div key={i} style={{ width: 8, height: 8, borderRadius: 1, background: Math.random() > 0.5 ? "rgba(255,255,255,0.80)" : "rgba(255,255,255,0.15)" }} />
                   ))}
                 </div>
               </div>
-              <div className="text-white/60 text-[11px] font-mono-custom">{currentUser.memberNumber}</div>
-              <div className="text-white/40 text-[10px] mt-1">Mostrar na entrada de eventos e parceiros</div>
             </div>
           </div>
         </div>
-      </div>
-      <p className="text-[11.5px] text-[#B8C4CC] text-center mt-2">Clica no cartão para ver o QR code</p>
-    </div>
-  );
-}
 
-function RewardCard({ reward }: { reward: typeof rewards[0] }) {
-  const [redeemed, setRedeemed] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    if (reward.code) {
-      navigator.clipboard?.writeText(reward.code).catch(() => {});
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
-  return (
-    <div className={cn(
-      "bg-white rounded-2xl border shadow-soft hover:shadow-card transition-all p-5 card-hover",
-      reward.isMostLoved ? "border-amber-200" : "border-[#EDE8E3]"
-    )}>
-      {/* Badge */}
-      {reward.isMostLoved && (
-        <div className="flex items-center gap-1.5 mb-3">
-          <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-          <span className="text-[10.5px] font-semibold text-amber-700 uppercase tracking-wide">
-            Mais amado pela comunidade
-          </span>
-        </div>
-      )}
-
-      <div className="flex items-start gap-3 mb-3">
-        <div className="w-11 h-11 bg-[#FAF8F5] rounded-xl flex items-center justify-center text-xl flex-shrink-0 border border-[#EDE8E3]">
-          {reward.emoji}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <h3 className="text-[14px] font-semibold text-[#1A1F2E] truncate">{reward.title}</h3>
-            {reward.isExclusive && (
-              <span className="text-[10px] bg-[#1E2D4E] text-white px-1.5 py-0.5 rounded-full font-medium flex-shrink-0">
-                Exclusivo
-              </span>
-            )}
-          </div>
-          <p className="text-[12px] text-[#8896A5]">{reward.partner}</p>
-        </div>
-      </div>
-
-      <p className="text-[13px] text-[#4A5568] leading-relaxed mb-3">{reward.description}</p>
-
-      {/* Benefit highlight */}
-      <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-3 mb-4">
-        <div className="flex items-center gap-2">
-          <Award className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
-          <span className="text-[12.5px] font-semibold text-emerald-800">{reward.benefit}</span>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between mb-4 text-[12px] text-[#8896A5]">
-        <span>{reward.redemptionCount} membros usaram este benefício</span>
-        {reward.validUntil && <span>Válido até {reward.validUntil}</span>}
-      </div>
-
-      {/* Actions */}
-      <div className="flex gap-2">
-        {reward.code && (
-          <button
-            onClick={handleCopy}
-            className={cn(
-              "flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-medium transition-all border font-mono-custom",
-              copied ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-[#FAF8F5] text-[#4A5568] border-[#EDE8E3]"
-            )}
-          >
-            {copied ? <CheckCircle className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-            {copied ? "Copiado!" : reward.code}
-          </button>
-        )}
-        <button
-          onClick={() => setRedeemed(!redeemed)}
-          className={cn(
-            "flex-1 text-[12.5px] font-medium rounded-xl py-2 transition-all",
-            redeemed
-              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-              : "bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white"
-          )}
-        >
-          {redeemed ? "Resgatado ✓" : "Resgatar benefício"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export default function RewardsPage() {
-  return (
-    <AppLayout>
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#1A1F2E] mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Benefícios & Cartão de Membro
-          </h1>
-          <p className="text-[14px] text-[#8896A5]">
-            Privilégios exclusivos para membros AAASE · {rewards.length} benefícios activos
+        {/* AI recommendation */}
+        <div className="ai-strip animate-fade-up delay-150" style={{ padding: "14px 20px", marginBottom: 24, display: "flex", gap: 12, alignItems: "center" }}>
+          <Sparkles style={{ width: 15, height: 15, color: "var(--gold)", flexShrink: 0 }} />
+          <p style={{ fontSize: 13, color: "var(--n700)" }}>
+            <strong>Mais amado por alumni como tu:</strong> Consulta jurídica com Lopes & Associados e check-up na Estoril Health Clinic — 94% dos alumni no teu perfil adoram estes benefícios.
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
-          {/* Left - Card + AI */}
-          <div className="col-span-1">
-            <DigitalCard />
+        {/* Rewards grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 16 }}>
+          {rewards.map((r, i) => (
+            <div key={r.id} className="card-glass animate-fade-up" style={{ padding: "22px", animationDelay: `${i * 0.07}s`, position: "relative", overflow: "hidden" }}>
+              {r.isMostLoved && (
+                <div style={{ position: "absolute", top: 14, right: 14 }}>
+                  <span className="pill pill-gold" style={{ fontSize: 10, padding: "3px 9px" }}>✦ Mais amado</span>
+                </div>
+              )}
 
-            {/* AI Recommendations */}
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/60 rounded-2xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span className="text-[11.5px] font-semibold text-amber-800 uppercase tracking-wide">AI recomenda para ti</span>
-              </div>
-              <p className="text-[12.5px] text-amber-900 leading-relaxed mb-3">
-                Baseado no teu perfil de fundador, a consulta jurídica com o <strong>João Lopes</strong> seria especialmente valiosa agora.
-              </p>
-              <div className="text-[11.5px] text-amber-700 font-medium">
-                Usado por 143 membros como tu →
-              </div>
-            </div>
-          </div>
+              <div style={{ fontSize: 32, marginBottom: 14 }}>{r.emoji}</div>
+              <div style={{ fontSize: 15, fontWeight: 650, color: "var(--n800)", letterSpacing: "-0.015em", marginBottom: 4 }}>{r.title}</div>
+              <div style={{ fontSize: 12.5, color: "var(--blue)", fontWeight: 500, marginBottom: 10 }}>{r.partner}</div>
+              <p style={{ fontSize: 13, color: "var(--n500)", lineHeight: 1.6, marginBottom: 14 }}>{r.description}</p>
 
-          {/* Right - Rewards */}
-          <div className="col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[15px] font-semibold text-[#1A1F2E]">Os teus benefícios</h2>
-              <span className="text-[12px] text-[#8896A5]">{rewards.length} disponíveis</span>
+              {/* Benefit highlight */}
+              <div style={{ background: "var(--gold-muted)", border: "1px solid rgba(232,160,32,0.18)", borderRadius: 12, padding: "10px 13px", marginBottom: 14 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: "#7A4F00", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.04em" }}>Teu benefício</div>
+                <div style={{ fontSize: 13, color: "#5A3700", fontWeight: 600 }}>{r.benefit}</div>
+              </div>
+
+              {r.code && !redeemed.includes(r.id) && (
+                <div className="mono" style={{ fontSize: 12, background: "var(--n100)", border: "1px solid var(--n200)", borderRadius: 10, padding: "8px 12px", textAlign: "center", color: "var(--n700)", marginBottom: 12, letterSpacing: "0.06em" }}>
+                  {r.code}
+                </div>
+              )}
+
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                <span style={{ fontSize: 11.5, color: "var(--n400)" }}>{r.redemptionCount} resgates</span>
+                {r.validUntil && <span style={{ fontSize: 11.5, color: "var(--n400)" }}>Válido até {r.validUntil}</span>}
+                {r.isExclusive && <span className="pill pill-blue" style={{ fontSize: 10.5 }}>Exclusivo</span>}
+              </div>
+
+              <button
+                onClick={() => setRedeemed(prev => prev.includes(r.id) ? prev.filter(x => x !== r.id) : [...prev, r.id])}
+                className="btn-primary"
+                style={{ width: "100%", padding: "10px", fontSize: 13, borderRadius: 12, background: redeemed.includes(r.id) ? "#22C55E" : "var(--blue)" }}
+              >
+                {redeemed.includes(r.id) ? "✓ Resgatado" : "Resgatar benefício"}
+              </button>
             </div>
-            <div className="space-y-4">
-              {rewards.map((reward) => (
-                <RewardCard key={reward.id} reward={reward} />
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </AppLayout>

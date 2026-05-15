@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, ArrowRight, Shield, Users, Award, Sparkles } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [step, setStep] = useState<"email" | "magic" | "google">("email");
+  const [step, setStep] = useState<"email" | "magic">("email");
   const [loading, setLoading] = useState(false);
 
   const handleMagicLink = async (e: React.FormEvent) => {
@@ -20,175 +19,157 @@ export default function LoginPage() {
     setLoading(false);
   };
 
-  const handleGoogleLogin = async () => {
+  const handleDemo = async () => {
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 700));
     router.push("/dashboard");
   };
 
-  return (
-    <div className="min-h-screen bg-[#FEFCFA] flex">
-      {/* Left - Decorative */}
-      <div className="hidden lg:flex w-[45%] gradient-navy relative overflow-hidden flex-col justify-between p-12">
-        {/* Background decoration */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-8 w-64 h-64 rounded-full border border-white/10"></div>
-          <div className="absolute top-32 left-20 w-40 h-40 rounded-full border border-white/08"></div>
-          <div className="absolute bottom-20 right-8 w-80 h-80 rounded-full border border-white/06"></div>
-          <div className="absolute bottom-40 right-20 w-48 h-48 rounded-full border border-white/10"></div>
-        </div>
+  const trustItems = [
+    { icon: Shield, text: "Identidade verificada para todos os membros" },
+    { icon: Users, text: "847 alumni activos em todo o mundo" },
+    { icon: Award, text: "Benefícios e perks exclusivos" },
+    { icon: Sparkles, text: "AI Concierge para ligações inteligentes" },
+  ];
 
-        {/* Logo */}
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-sm" style={{ fontFamily: "'Playfair Display', serif" }}>AA</span>
+  return (
+    <div style={{ minHeight: "100dvh", background: "var(--n50)", display: "flex" }} className="app-bg">
+      {/* Left panel — hero */}
+      <div
+        className="hero-gradient"
+        style={{ width: "44%", display: "none", flexDirection: "column", justifyContent: "space-between", padding: "48px", position: "relative", flexShrink: 0 }}
+        id="left-panel"
+      >
+        <style>{`@media(min-width:960px){#left-panel{display:flex}}`}</style>
+        <div style={{ position: "relative", zIndex: 1 }}>
+          {/* Logo */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 56 }}>
+            <div style={{ width: 42, height: 42, borderRadius: 13, overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.20)" }}>
+              <img src="/aaase-logo.png" alt="AAASE" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div>
-              <div className="text-white font-bold text-sm tracking-wide">AAASE</div>
-              <div className="text-white/50 text-xs">Alumni Network</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "white", letterSpacing: "-0.02em" }}>AAASE</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.50)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" }}>Alumni Network</div>
             </div>
           </div>
 
-          <h1 className="text-4xl font-bold text-white leading-tight mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 style={{ fontSize: 38, fontWeight: 750, color: "white", letterSpacing: "-0.04em", lineHeight: 1.12, marginBottom: 20, textWrap: "balance" } as React.CSSProperties}>
             A tua comunidade.<br />A tua rede.<br />O teu legado.
           </h1>
-          <p className="text-white/65 text-[15px] leading-relaxed max-w-sm">
-            Uma rede privada e de confiança para os Antigos Alunos Salesianos de Estoril. Ligações genuínas, oportunidades reais, comunidade para toda a vida.
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.60)", lineHeight: 1.65, maxWidth: 360 }}>
+            Uma rede privada e de confiança para os Antigos Alunos Salesianos de Estoril.
           </p>
         </div>
 
-        {/* Trust indicators */}
-        <div className="relative z-10 space-y-3">
-          {[
-            { icon: Shield, text: "Identidade verificada para todos os membros" },
-            { icon: Users, text: "847 alumni activos em todo o mundo" },
-            { icon: Award, text: "Benefícios e perks exclusivos para membros" },
-            { icon: Sparkles, text: "AI Concierge para ligações inteligentes" },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.text} className="flex items-center gap-3">
-                <div className="w-7 h-7 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-3.5 h-3.5 text-white/70" />
-                </div>
-                <span className="text-white/60 text-[13px]">{item.text}</span>
+        <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+          {trustItems.map(({ icon: Icon, text }) => (
+            <div key={text} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 10, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.16)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Icon style={{ width: 14, height: 14, color: "rgba(255,255,255,0.75)" }} />
               </div>
-            );
-          })}
+              <span style={{ fontSize: 13, color: "rgba(255,255,255,0.58)" }}>{text}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Right - Auth form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-[380px]">
-
+      {/* Right panel — auth */}
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
+        <div style={{ width: "100%", maxWidth: 380 }}>
           {/* Mobile logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-9 h-9 gradient-navy rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-xs" style={{ fontFamily: "'Playfair Display', serif" }}>AA</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }} id="mobile-logo">
+            <style>{`@media(min-width:960px){#mobile-logo{display:none}}`}</style>
+            <div style={{ width: 36, height: 36, borderRadius: 11, overflow: "hidden" }}>
+              <img src="/aaase-logo.png" alt="AAASE" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
-            <div className="text-[15px] font-bold text-[#1E2D4E] tracking-wide">AAASE Alumni Network</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "var(--n800)" }}>AAASE Alumni Network</div>
           </div>
 
           {step === "magic" ? (
-            <div className="text-center py-8">
-              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Mail className="w-6 h-6 text-blue-600" />
+            <div style={{ textAlign: "center", padding: "40px 0" }} className="animate-scale-in">
+              <div style={{ width: 56, height: 56, borderRadius: 18, background: "var(--blue-muted)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", border: "1px solid rgba(46,109,180,0.15)" }}>
+                <Mail style={{ width: 24, height: 24, color: "var(--blue)" }} />
               </div>
-              <h2 className="text-xl font-bold text-[#1A1F2E] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Verifica o teu email
-              </h2>
-              <p className="text-[#8896A5] text-[13.5px] leading-relaxed mb-6">
-                Enviámos um link de acesso para <strong className="text-[#1A1F2E]">{email}</strong>.
-                Clica no link para entrar na tua conta.
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--n800)", letterSpacing: "-0.025em", marginBottom: 10 }}>Verifica o teu email</h2>
+              <p style={{ fontSize: 14, color: "var(--n400)", lineHeight: 1.6, marginBottom: 24 }}>
+                Enviámos um link de acesso para <strong style={{ color: "var(--n700)" }}>{email}</strong>. Clica no link para entrar.
               </p>
-              <button
-                onClick={() => setStep("email")}
-                className="text-[13px] text-[#3A7BC8] hover:text-[#1E2D4E] transition-colors"
-              >
+              <button onClick={() => setStep("email")} style={{ fontSize: 13, color: "var(--blue)", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit" }}>
                 ← Tentar com outro email
               </button>
             </div>
           ) : (
-            <>
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-[#1A1F2E] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Bem-vindo de volta
-                </h2>
-                <p className="text-[#8896A5] text-[14px]">
-                  A tua comunidade está à tua espera.
-                </p>
-              </div>
+            <div className="animate-fade-up">
+              <h2 style={{ fontSize: 24, fontWeight: 750, color: "var(--n800)", letterSpacing: "-0.03em", marginBottom: 6 }}>Bem-vindo de volta</h2>
+              <p style={{ fontSize: 14, color: "var(--n400)", marginBottom: 32 }}>A tua comunidade está à tua espera.</p>
 
-              {/* Google Login */}
+              {/* Google */}
               <button
-                onClick={handleGoogleLogin}
+                onClick={handleDemo}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border border-[#D9D2C9] hover:border-[#B8AFA5] rounded-xl text-[13.5px] font-medium text-[#1A1F2E] shadow-soft hover:shadow-card transition-all mb-4 group"
+                style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 12, padding: "12px 20px", background: "white", border: "1px solid var(--n200)", borderRadius: 14, fontSize: 14, fontWeight: 500, color: "var(--n800)", cursor: "pointer", boxShadow: "var(--shadow-xs)", marginBottom: 16, transition: "all 0.15s", fontFamily: "inherit" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--n300)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-xs)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--n200)"; }}
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/>
-                  <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96h-3.98v3.09C3.515 21.3 7.615 24 12.255 24z"/>
-                  <path fill="#FBBC05" d="M5.525 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62h-3.98a11.86 11.86 0 000 10.76l3.98-3.09z"/>
-                  <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.64 0-8.74 2.7-10.71 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
-                </svg>
+                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/><path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96h-3.98v3.09C3.515 21.3 7.615 24 12.255 24z"/><path fill="#FBBC05" d="M5.525 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62h-3.98a11.86 11.86 0 000 10.76l3.98-3.09z"/><path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.64 0-8.74 2.7-10.71 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
                 {loading ? "A entrar..." : "Continuar com Google"}
               </button>
 
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex-1 h-px bg-[#EDE8E3]"></div>
-                <span className="text-[12px] text-[#B8C4CC]">ou</span>
-                <div className="flex-1 h-px bg-[#EDE8E3]"></div>
-              </div>
+              {/* Divider */}
+              <div className="divider-text" style={{ marginBottom: 16, fontSize: 12, color: "var(--n400)" }}>ou</div>
 
-              {/* Magic Link */}
-              <form onSubmit={handleMagicLink} className="space-y-3">
-                <div>
-                  <label className="text-[12.5px] font-medium text-[#4A5568] block mb-1.5">
-                    Email institucional ou pessoal
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="o-teu-email@exemplo.com"
-                    className="w-full px-4 py-3 bg-white border border-[#D9D2C9] rounded-xl text-[13.5px] text-[#1A1F2E] placeholder-[#B8C4CC] focus:outline-none focus:ring-2 focus:ring-[#3A7BC8]/20 focus:border-[#3A7BC8] transition-all"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={loading || !email}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#1E2D4E] hover:bg-[#2A3F6E] disabled:opacity-50 text-white rounded-xl text-[13.5px] font-medium transition-all shadow-card hover:shadow-elevated"
-                >
+              {/* Magic link */}
+              <form onSubmit={handleMagicLink} style={{ marginBottom: 20 }}>
+                <label style={{ display: "block", fontSize: 12.5, fontWeight: 500, color: "var(--n600)", marginBottom: 7 }}>
+                  Email institucional ou pessoal
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="o-teu-email@exemplo.com"
+                  className="input-field"
+                  style={{ marginBottom: 10 }}
+                />
+                <button type="submit" className="btn-primary" style={{ width: "100%", padding: "12px", fontSize: 14, borderRadius: 14 }} disabled={loading || !email}>
                   {loading ? (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.4)", borderTopColor: "white", borderRadius: "50%", animation: "spin 0.7s linear infinite", display: "inline-block" }} />
+                      A enviar...
+                    </span>
                   ) : (
-                    <>
-                      Enviar link mágico
-                      <ArrowRight className="w-4 h-4" />
-                    </>
+                    <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                      Enviar link mágico <ArrowRight style={{ width: 15, height: 15 }} />
+                    </span>
                   )}
                 </button>
               </form>
 
-              <div className="mt-6 pt-5 border-t border-[#EDE8E3] text-center">
-                <p className="text-[12.5px] text-[#8896A5]">
-                  Ainda não és membro?{" "}
-                  <Link href="/signup" className="text-[#3A7BC8] font-medium hover:text-[#1E2D4E] transition-colors">
-                    Pede acesso
-                  </Link>
+              {/* Demo */}
+              <div style={{ borderTop: "1px solid var(--n150)", paddingTop: 20, marginBottom: 20 }}>
+                <button
+                  onClick={handleDemo}
+                  style={{ width: "100%", padding: "12px", background: "var(--blue-dark)", border: "none", borderRadius: 14, fontSize: 13.5, fontWeight: 600, color: "white", cursor: "pointer", boxShadow: "0 4px 16px rgba(26,74,128,0.35)", transition: "all 0.15s", fontFamily: "inherit" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "var(--blue)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "var(--blue-dark)"; }}
+                >
+                  ✦ Entrar como Miguel Ferreira (Demo)
+                </button>
+                <p style={{ fontSize: 11.5, color: "var(--n300)", textAlign: "center", marginTop: 10 }}>
+                  Acesso imediato à plataforma demo
                 </p>
               </div>
-            </>
+            </div>
           )}
 
-          <div className="mt-8 flex items-center justify-center gap-1">
-            <Shield className="w-3 h-3 text-[#B8C4CC]" />
-            <span className="text-[11px] text-[#B8C4CC]">Rede privada e verificada · AAASE © 2026</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+            <Shield style={{ width: 12, height: 12, color: "var(--n300)" }} />
+            <span style={{ fontSize: 11.5, color: "var(--n300)" }}>Rede privada e verificada · AAASE © 2026</span>
           </div>
         </div>
       </div>
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

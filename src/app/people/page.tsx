@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Filter, Shield, Star, MapPin, Users, Sparkles, MessageSquare, UserPlus, ChevronDown } from "lucide-react";
+import { Search, Shield, MapPin, Users, Sparkles } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { alumniList } from "@/data/demo";
 import { cn } from "@/lib/utils";
@@ -12,62 +12,54 @@ const filters = ["Todos", "Lisboa", "Mentores", "Fundadores", "AI & Tech", "Sust
 
 function AlumniCard({ person }: { person: Alumni }) {
   const [introRequested, setIntroRequested] = useState(false);
+  const trustColor = person.trustScore >= 90 ? "#22C55E" : person.trustScore >= 75 ? "var(--blue)" : "var(--gold)";
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EDE8E3] shadow-soft hover:shadow-card transition-all p-5 card-hover">
+    <div className="card-glass animate-fade-up" style={{ padding: "22px" }}>
       {/* Header */}
-      <div className="flex items-start gap-3 mb-3">
-        <div className="relative flex-shrink-0">
-          <img src={person.avatar} alt={person.name} className="w-12 h-12 rounded-full bg-[#EDE8E3]" />
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 14 }}>
+        <div style={{ position: "relative", flexShrink: 0 }}>
+          <img src={person.avatar} alt={person.name} style={{ width: 50, height: 50, borderRadius: "50%", background: "var(--n150)", border: "2px solid white", boxShadow: "var(--shadow-sm)" }} />
           {person.isVerified && (
-            <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
-              <Shield className="w-2.5 h-2.5 text-white" />
+            <div style={{ position: "absolute", bottom: -1, right: -1, width: 18, height: 18, background: "var(--blue)", borderRadius: "50%", border: "2px solid white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Shield style={{ width: 9, height: 9, color: "white" }} />
             </div>
           )}
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[14px] font-semibold text-[#1A1F2E]">{person.name}</span>
-            <span className="text-[10px] text-[#8896A5] bg-[#FAF8F5] px-1.5 py-0.5 rounded-full">
-              Turma {person.graduationYear}
-            </span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 2 }}>
+            <span style={{ fontSize: 14.5, fontWeight: 650, color: "var(--n800)", letterSpacing: "-0.015em" }}>{person.name}</span>
+            <span className="pill pill-neutral" style={{ fontSize: 10, padding: "2px 7px" }}>Turma {person.graduationYear}</span>
           </div>
-          <div className="text-[12.5px] text-[#4A5568] mt-0.5">{person.role}</div>
-          <div className="text-[12px] text-[#8896A5]">{person.company}</div>
+          <div style={{ fontSize: 13, color: "var(--n600)", marginBottom: 1 }}>{person.role}</div>
+          <div style={{ fontSize: 12, color: "var(--n400)" }}>{person.company}</div>
         </div>
-        <div className="flex-shrink-0 text-right">
-          <div className={cn(
-            "text-[11px] font-medium px-2 py-1 rounded-full",
-            person.trustScore >= 90 ? "bg-emerald-50 text-emerald-700" :
-            person.trustScore >= 75 ? "bg-blue-50 text-blue-700" :
-            "bg-amber-50 text-amber-700"
-          )}>
-            ✦ {person.trustScore}
+        {/* Trust score */}
+        <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 5, background: "var(--n50)", border: `1px solid ${trustColor}30`, borderRadius: 10, padding: "5px 10px" }}>
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: trustColor }} />
+            <span style={{ fontSize: 12, fontWeight: 650, color: trustColor, letterSpacing: "-0.01em" }}>{person.trustScore}</span>
           </div>
         </div>
       </div>
 
-      {/* Location & badges */}
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
-        <div className="flex items-center gap-1 text-[12px] text-[#8896A5]">
-          <MapPin className="w-3 h-3" />
+      {/* Tags */}
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "var(--n400)" }}>
+          <MapPin style={{ width: 11, height: 11 }} />
           {person.city}, {person.country}
         </div>
-        {person.isMentor && (
-          <span className="text-[10.5px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-medium">Mentor</span>
-        )}
-        {person.isFounder && (
-          <span className="text-[10.5px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Fundador</span>
-        )}
+        {person.isMentor && <span className="pill pill-gold" style={{ fontSize: 10.5, padding: "2px 9px" }}>Mentor</span>}
+        {person.isFounder && <span className="pill pill-green" style={{ fontSize: 10.5, padding: "2px 9px" }}>Fundador</span>}
       </div>
 
       {/* AI Why Relevant */}
       {person.whyRelevant && (
-        <div className="bg-blue-50/60 rounded-xl p-3 mb-3">
-          <div className="flex items-start gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" />
-            <p className="text-[11.5px] text-blue-800 leading-relaxed">
-              <span className="font-semibold">Porquê relevante: </span>{person.whyRelevant}
+        <div style={{ background: "var(--blue-muted)", border: "1px solid rgba(46,109,180,0.12)", borderRadius: 14, padding: "10px 13px", marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+            <Sparkles style={{ width: 13, height: 13, color: "var(--blue)", flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 11.5, color: "var(--blue-dark)", lineHeight: 1.55 }}>
+              <strong>Porquê relevante:</strong> {person.whyRelevant}
             </p>
           </div>
         </div>
@@ -75,182 +67,123 @@ function AlumniCard({ person }: { person: Alumni }) {
 
       {/* Mutual connections */}
       {person.mutualConnections && person.mutualConnections.length > 0 && (
-        <div className="flex items-center gap-2 mb-3">
-          <Users className="w-3 h-3 text-[#8896A5]" />
-          <span className="text-[12px] text-[#8896A5]">
-            {person.mutualConnections.length} conexão{person.mutualConnections.length > 1 ? "ões" : ""} em comum:
-            <span className="text-[#4A5568] font-medium"> {person.mutualConnections.slice(0, 2).join(", ")}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
+          <Users style={{ width: 12, height: 12, color: "var(--n400)" }} />
+          <span style={{ fontSize: 12, color: "var(--n500)" }}>
+            {person.mutualConnections.length} conexões em comum: <strong style={{ color: "var(--n700)" }}>{person.mutualConnections.slice(0, 2).join(", ")}</strong>
           </span>
         </div>
       )}
 
       {/* Interests */}
-      <div className="flex flex-wrap gap-1.5 mb-4">
-        {person.interests.slice(0, 3).map((interest) => (
-          <span key={interest} className="text-[11px] text-[#4A5568] bg-[#FAF8F5] border border-[#EDE8E3] px-2 py-0.5 rounded-full">
-            {interest}
-          </span>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
+        {person.interests.slice(0, 3).map((t) => (
+          <span key={t} className="pill pill-neutral" style={{ fontSize: 11, padding: "3px 10px" }}>{t}</span>
         ))}
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2">
-        <Link
-          href={`/people/${person.id}`}
-          className="flex-1 text-center text-[12.5px] font-medium text-[#1A1F2E] bg-[#FAF8F5] hover:bg-[#F0EBE3] border border-[#EDE8E3] rounded-xl py-2 transition-colors"
+      <div style={{ display: "flex", gap: 8 }}>
+        <Link href={`/people/${person.id}`} style={{ flex: 1, textAlign: "center", fontSize: 13, fontWeight: 500, color: "var(--n800)", background: "var(--n100)", border: "1px solid var(--n200)", borderRadius: 12, padding: "9px 0", textDecoration: "none", transition: "all 0.15s" }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "var(--n150)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "var(--n100)"; }}
         >
           Ver perfil
         </Link>
         <button
-          onClick={() => setIntroRequested(!introRequested)}
-          className={cn(
-            "flex-1 flex items-center justify-center gap-1.5 text-[12.5px] font-medium rounded-xl py-2 transition-all",
-            introRequested
-              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-              : "bg-[#1E2D4E] hover:bg-[#2A3F6E] text-white"
-          )}
+          onClick={() => setIntroRequested(true)}
+          className="btn-primary"
+          style={{ flex: 1, fontSize: 13, padding: "9px 0", borderRadius: 12, background: introRequested ? "#22C55E" : "var(--blue)", boxShadow: introRequested ? "0 2px 8px rgba(34,197,94,0.25)" : undefined }}
         >
-          <MessageSquare className="w-3.5 h-3.5" />
-          {introRequested ? "Pedido enviado ✓" : "Introdução"}
+          {introRequested ? "✓ Pedido" : "Introdução"}
         </button>
       </div>
-    </div>
-  );
-}
-
-function SearchFilters({ activeFilter, setActiveFilter }: { activeFilter: string; setActiveFilter: (f: string) => void }) {
-  return (
-    <div className="flex gap-2 flex-wrap mb-6">
-      {filters.map((filter) => (
-        <button
-          key={filter}
-          onClick={() => setActiveFilter(filter)}
-          className={cn(
-            "px-3 py-1.5 rounded-xl text-[12.5px] font-medium transition-all",
-            activeFilter === filter
-              ? "bg-[#1E2D4E] text-white shadow-soft"
-              : "bg-white text-[#4A5568] border border-[#EDE8E3] hover:border-[#B8AFA5]"
-          )}
-        >
-          {filter}
-        </button>
-      ))}
     </div>
   );
 }
 
 export default function PeoplePage() {
-  const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("Todos");
+  const [search, setSearch] = useState("");
 
-  const filteredAlumni = alumniList.filter((a) => {
-    const matchesSearch =
-      !search ||
-      a.name.toLowerCase().includes(search.toLowerCase()) ||
-      a.role.toLowerCase().includes(search.toLowerCase()) ||
-      a.company.toLowerCase().includes(search.toLowerCase()) ||
-      a.industry.toLowerCase().includes(search.toLowerCase()) ||
-      a.city.toLowerCase().includes(search.toLowerCase());
-
-    const matchesFilter =
-      activeFilter === "Todos" ||
-      (activeFilter === "Lisboa" && a.city === "Lisboa") ||
-      (activeFilter === "Mentores" && a.isMentor) ||
-      (activeFilter === "Fundadores" && a.isFounder) ||
-      (activeFilter === "AI & Tech" && (a.industry.includes("AI") || a.industry.includes("Tech") || a.industry.includes("FinTech"))) ||
-      (activeFilter === "Sustentabilidade" && (a.industry.includes("Clima") || a.interests.includes("ClimaTech") || a.interests.includes("Sustentabilidade"))) ||
-      (activeFilter === "Saúde" && a.industry.includes("Health")) ||
-      (activeFilter === "Investidores" && a.industry.includes("Capital")) ||
-      (activeFilter === "Expats" && a.country !== "Portugal");
-
-    return matchesSearch && matchesFilter;
+  const filtered = alumniList.filter(p => {
+    if (search && !p.name.toLowerCase().includes(search.toLowerCase()) && !p.company.toLowerCase().includes(search.toLowerCase())) return false;
+    if (activeFilter === "Todos") return true;
+    if (activeFilter === "Lisboa") return p.city === "Lisboa";
+    if (activeFilter === "Mentores") return p.isMentor;
+    if (activeFilter === "Fundadores") return p.isFounder;
+    if (activeFilter === "AI & Tech") return p.industry.toLowerCase().includes("ai") || p.industry.toLowerCase().includes("tech") || p.industry.toLowerCase().includes("fintech");
+    if (activeFilter === "Sustentabilidade") return p.interests.some(i => i.toLowerCase().includes("sustain") || i.toLowerCase().includes("clima"));
+    if (activeFilter === "Saúde") return p.industry.toLowerCase().includes("health") || p.industry.toLowerCase().includes("med");
+    if (activeFilter === "Investidores") return p.industry.toLowerCase().includes("capital") || p.industry.toLowerCase().includes("invest");
+    if (activeFilter === "Expats") return p.city !== "Lisboa" && p.country !== "Portugal";
+    return true;
   });
 
   return (
     <AppLayout>
-      <div className="max-w-6xl mx-auto">
+      <div style={{ maxWidth: 1180, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#1A1F2E] mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Comunidade Alumni
-          </h1>
-          <p className="text-[14px] text-[#8896A5]">
-            {alumniList.length} alumni · Recomendações personalizadas pela IA
-          </p>
+        <div style={{ marginBottom: 28 }} className="animate-fade-up">
+          <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--n800)", marginBottom: 6 }}>Comunidade Alumni</h1>
+          <p style={{ fontSize: 14, color: "var(--n400)" }}>847 alumni · Recomendações personalizadas pela IA</p>
         </div>
 
-        {/* AI Banner */}
-        <div className="bg-gradient-to-br from-[#1E2D4E] to-[#2A3F6E] rounded-2xl p-5 mb-6 text-white">
-          <div className="flex items-center gap-3 mb-2">
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span className="text-[12px] font-semibold uppercase tracking-wide text-white/70">AI Concierge</span>
-          </div>
-          <p className="text-[14px] text-white/80 mb-3">
-            Diz ao Concierge quem procuras e ele encontra a melhor correspondência na rede.
+        {/* Search + AI banner */}
+        <div className="ai-strip animate-fade-up delay-100" style={{ padding: "14px 18px", marginBottom: 20, display: "flex", alignItems: "center", gap: 14 }}>
+          <Sparkles style={{ width: 16, height: 16, color: "var(--gold)", flexShrink: 0 }} />
+          <p style={{ fontSize: 13, color: "var(--n600)", flex: 1 }}>
+            Usa o <strong style={{ color: "var(--n800)" }}>AI Concierge</strong> para encontrar pessoas. Experimenta: "Quem trabalha em AI em Lisboa?" ou "Encontrar fundadores em sustentabilidade"
           </p>
-          <div className="flex flex-wrap gap-2">
-            {[
-              "Quem trabalha em AI em Lisboa?",
-              "Encontrar fundadores em sustentabilidade",
-              "Quem pode ajudar com fundraising?",
-              "Advogados alumni de confiança",
-            ].map((prompt) => (
-              <Link
-                key={prompt}
-                href={`/concierge?q=${encodeURIComponent(prompt)}`}
-                className="text-[12px] bg-white/10 hover:bg-white/20 text-white/80 hover:text-white px-3 py-1.5 rounded-xl transition-colors border border-white/10"
-              >
-                {prompt}
-              </Link>
-            ))}
-          </div>
+          <Link href="/concierge" className="btn-primary" style={{ fontSize: 12.5, padding: "8px 16px", borderRadius: 11, whiteSpace: "nowrap" }}>
+            Abrir Concierge
+          </Link>
         </div>
 
-        {/* Search */}
-        <div className="relative mb-4">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896A5]" />
+        {/* Search bar */}
+        <div className="animate-fade-up delay-150" style={{ position: "relative", marginBottom: 16 }}>
+          <Search style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--n400)" }} />
           <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            className="input-field"
+            style={{ paddingLeft: 42 }}
             placeholder="Pesquisar por nome, empresa, cidade, área..."
-            className="w-full pl-11 pr-4 py-3.5 bg-white border border-[#D9D2C9] rounded-xl text-[14px] text-[#1A1F2E] placeholder-[#B8C4CC] focus:outline-none focus:ring-2 focus:ring-[#3A7BC8]/20 focus:border-[#3A7BC8] transition-all shadow-soft"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
         </div>
 
-        <SearchFilters activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
-
-        {/* Results count */}
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-[13px] text-[#8896A5]">
-            {filteredAlumni.length} alumni encontrado{filteredAlumni.length !== 1 ? "s" : ""}
-          </p>
-          <button className="flex items-center gap-1.5 text-[12.5px] text-[#4A5568] hover:text-[#1A1F2E] transition-colors">
-            <Filter className="w-3.5 h-3.5" />
-            Filtros avançados
-            <ChevronDown className="w-3.5 h-3.5" />
-          </button>
+        {/* Filters */}
+        <div className="animate-fade-up delay-200" style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+          {filters.map(f => (
+            <button key={f} onClick={() => setActiveFilter(f)}
+              style={{
+                padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.15s",
+                background: activeFilter === f ? "var(--blue)" : "var(--n0)",
+                color: activeFilter === f ? "white" : "var(--n600)",
+                boxShadow: activeFilter === f ? "0 2px 8px rgba(46,109,180,0.25)" : "var(--shadow-xs)",
+                border: activeFilter === f ? "none" : "1px solid var(--n200)",
+              } as React.CSSProperties}
+            >
+              {f}
+            </button>
+          ))}
         </div>
 
         {/* Grid */}
-        {filteredAlumni.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
-            {filteredAlumni.map((person) => (
-              <AlumniCard key={person.id} person={person} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <div className="w-14 h-14 bg-[#FAF8F5] rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Users className="w-6 h-6 text-[#B8C4CC]" />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 16 }}>
+          {filtered.map((person, i) => (
+            <div key={person.id} style={{ animationDelay: `${i * 0.06}s` }}>
+              <AlumniCard person={person} />
             </div>
-            <h3 className="text-[15px] font-semibold text-[#1A1F2E] mb-1">Nenhum alumni encontrado</h3>
-            <p className="text-[13px] text-[#8896A5] mb-4">Tenta outra pesquisa ou usa o AI Concierge.</p>
-            <Link href="/concierge" className="text-[13px] font-medium text-[#3A7BC8] hover:text-[#1E2D4E] transition-colors">
-              Abrir AI Concierge →
-            </Link>
-          </div>
-        )}
+          ))}
+          {filtered.length === 0 && (
+            <div style={{ gridColumn: "1/-1", textAlign: "center", padding: "60px 20px", color: "var(--n400)" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>🔍</div>
+              <div style={{ fontSize: 15, fontWeight: 500, color: "var(--n600)", marginBottom: 6 }}>Nenhum alumni encontrado</div>
+              <div style={{ fontSize: 13 }}>Tenta pesquisar com outros termos ou usa o AI Concierge</div>
+            </div>
+          )}
+        </div>
       </div>
     </AppLayout>
   );
