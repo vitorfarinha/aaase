@@ -33,7 +33,7 @@ export function Sidebar() {
   const [notifCount] = useState(2);
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-[#EDE8E3] flex flex-col z-40 shadow-soft">
+    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-[#EDE8E3] flex flex-col z-30 shadow-soft">
       {/* Logo */}
       <div className="px-6 py-5 border-b border-[#EDE8E3]">
         <div className="flex items-center gap-3">
@@ -152,7 +152,7 @@ export function TopBar() {
   const currentPage = pageTitle[pathname] || "AAASE";
 
   return (
-    <header className="fixed top-0 left-64 right-0 h-14 bg-white/90 backdrop-blur border-b border-[#EDE8E3] flex items-center justify-between px-6 z-30">
+    <header className="fixed top-0 left-64 right-0 h-14 bg-white/95 backdrop-blur border-b border-[#EDE8E3] flex items-center justify-between px-6 z-20">
       <div className="text-[15px] font-semibold text-[#1A1F2E]">{currentPage}</div>
       <div className="flex items-center gap-3">
         <Link href="/notifications" className="relative p-2 rounded-xl hover:bg-[#FAF8F5] transition-colors">
@@ -175,7 +175,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[#FEFCFA]">
       <Sidebar />
       <TopBar />
-      <main className="ml-64 pt-14 min-h-screen">
+      <main className="pl-64 pt-14 min-h-screen">
         <div className="p-6">
           {children}
         </div>
