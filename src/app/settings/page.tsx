@@ -67,7 +67,14 @@ export default function SettingsPage() {
         </Section>
 
         <div className="card-glass animate-fade-up delay-200" style={{ padding: "18px 22px" }}>
-          <button className="btn-ghost" style={{ width: "100%", justifyContent: "center", color: "var(--red)", borderColor: "rgba(192,57,43,0.20)", gap: 9 }}>
+          <button
+            className="btn-ghost"
+            style={{ width: "100%", justifyContent: "center", color: "var(--red)", borderColor: "rgba(192,57,43,0.20)", gap: 9 }}
+            onClick={async () => {
+              await fetch("/api/gate", { method: "DELETE" });
+              window.location.href = "/gate";
+            }}
+          >
             <LogOut style={{ width: 15, height: 15 }} /> Terminar sessão
           </button>
         </div>
